@@ -1,0 +1,1285 @@
+<?php
+
+namespace App\Http\Controllers\Candidate;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Service\OrderService;
+use App\Service\SubscriptionService;
+use App\Service\Candidate\CandidateService;
+use App\Service\CountryService;
+use App\Service\StateService;
+use App\Service\UploadService;
+use App\Service\CommonService;
+use Response;
+use Auth;
+use View;
+use App\Service\PostService;
+use App\Service\MessageService;
+use App\Service\CmsService;
+use Illuminate\Support\Facades\Storage;
+
+class Candidate extends Controller
+{
+
+	protected $orderService;
+    protected $subscriptionService;
+    protected $candidateService;
+    protected $countryService;
+    protected $stateService;
+    protected $uploadService;
+    protected $commonService;
+    protected $postService;
+    protected $messageService;
+    protected $cmsServices;
+    
+   public function __construct(
+    OrderService $orderService,
+    SubscriptionService $subscriptionService,
+    CandidateService $candidateService,
+    CountryService $countryService,
+    StateService $stateService,
+    UploadService  $uploadService,
+    CommonService $commonService,
+    PostService $postService,
+    MessageService $messageService,
+    CmsService $cmsService
+    )
+    {   
+        $this->middleware('checkMcqScreening', ['except' => array('payment','publicProfile','getCountryStates','getStatesCity','activeYourAccount','storeServiceInfo','jobList','viewJobPost', 'applyJob')]);
+        $this->middleware('auth', ['except' => array('payment','publicProfile','getCountryStates','getStatesCity','activeYourAccount','storeServiceInfo','jobList','viewJobPost', 'applyJob')]);
+        $this->orderService = $orderService;
+        $this->subscriptionService = $subscriptionService;
+        $this->candidateService = $candidateService;
+        $this->countryService = $countryService;
+        $this->stateService = $stateService;
+        $this->uploadService = $uploadService;
+        $this->commonService = $commonService;
+        $this->postService = $postService;
+        $this->messageService = $messageService;
+        $this->cmsServices = $cmsService;
+    }
+    /**
+     * Developer : Israfil
+     * Function to show Dashboard
+     *
+     */ 
+    public function dashboard()
+    {   
+        return redirect('/');
+        $activeClass = 'dashboard';
+        $postData = $this->candidateService->getPostList(Auth::user()->id);    
+        $user_type_id = 2;
+        $user_type = 'candidate';
+        return view('frontend.candidate.dashboard',compact('postData','user_type','user_type_id','activeClass'));
+    }
+    /**
+     * Developer : Israfil 
+     * Function to proceed payment for subscription
+     * @param integer $paymentId
+     */
+    public function payment($paymentId)
+    {
+        $data['id'] = decrypt($paymentId);
+        $orderInformation = $this->orderService->getDetails($data);
+        if(!$orderInformation){
+            return redirect('/');
+        }
+        $pageTitle = "Service Details";
+    	return view('frontend.payment.payment',compact("pageTitle","orderInformation"));
+    }
+
+    /*
+    @DevelopedBy: Rumpa Ghosh
+    @Date: 20/04/2020
+    @FunctionFor: Candidate profile view and edit.
+    */
+    public function editProfile(){
+        $profileDataOld = $this->candidateService->getDetails(Auth::user()->id); 
+        //dd($profileDataOld);
+        $profileData = $profileDataOld->toArray(); // dd($profileDataOld['uploadedCV']['name']);
+        $profileData['country_id'] = 14; // Austria
+        $allSkillArr = $this->candidateService->getSkillArr();
+        $allLanguageArr = $this->candidateService->getLanguageArr();
+        $allProfArr = $this->candidateService->getProficiencyArr();
+        $imageLibrary = $this->candidateService->getMyhrImageLibrary();
+        $pageTitle = 'Edit Profile';
+        $metaTitle = "Edit profile";
+        $countries = $this->countryService->findAllCountryListWithStates();
+        $imgLibNames = $this->uploadService->getImglibNames();
+        $cmsid = 9; // for candidate profile cms from admin
+        $cmsData = $this->cmsServices->getCmsData($cmsid);
+        return view('frontend.candidate.edit',compact("pageTitle","metaTitle","profileData","countries","profileDataOld","allSkillArr","allLanguageArr","allProfArr","imageLibrary","imgLibNames","cmsData"));
+    }
+
+    /*
+    @DevelopedBy: Rumpa Ghosh
+    @Date: 20/04/2020
+    @FunctionFor: Candidate public profile.
+    @param : string $slug
+    @return : view
+    */
+    public function publicProfile($slug){
+        $profileData = $this->candidateService->getDetailsBySlug($slug);
+        //dd($profileData);
+        // $downloadCvFlag = 1;
+        // if((Auth::user()) && (Auth::user()->user_type == 3)){
+        //     $downloadCvFlag = $this->candidateService->chkJobApply($slug);
+        // }
+        $pageTitle = 'View Profile';
+        $metaTitle = "View profile";
+        return view('frontend.candidate.view',compact("pageTitle","metaTitle","profileData","downloadCvFlag"));
+    }
+    /**
+     * Function to upload profile image
+     * @param Illuminate\Http\Request $request
+     * @return json $response
+     */
+    public function uploadProfileImg(Request $request)
+    {
+        $response = $this->candidateService->uploadProfileImage($request);       
+        echo json_encode($response);
+    }
+    /**
+     * Function to upload banner image
+     * @param Illuminate\Http\Request $request
+     * @return json $response
+     */
+    public function uploadBannerImage(Request $request)
+    {
+        $response = $this->candidateService->uploadBannerImage($request);       
+        echo json_encode($response);
+    }
+    /*
+    @DevelopedBy: Rumpa Ghosh
+    @Date: 05/05/2020
+    @FunctionFor: Candidate manage profile.
+    @return : view
+    */
+    public function manageProfile()
+    {
+        $pageTitle = 'Manage Profile';
+        $metaTitle = "Manage profile";
+        return view('frontend.candidate.manageProfile',compact("pageTitle","metaTitle"));
+    }
+
+    /*
+    @DevelopedBy: Rumpa Ghosh
+    @Date: 05/05/2020
+    @FunctionFor: Candidate manage profile.
+    @return : view
+    */
+    public function manageProfilePost(Request $request)
+    {
+        $profileData = $this->candidateService->updateUserStatus($request->all());
+        if($profileData){
+           request()->session()->flash('success-msg', __('messages.YOUR_PROFILE_DELETED_SUCCESSFULLY') ); 
+           Auth::logout();
+           return redirect('/');
+        }
+    }
+
+    /*
+    @DevelopedBy: Rumpa Ghosh
+    @Date: 05/05/2020
+    @FunctionFor: Candidate manage profile.
+    @return : view
+    */
+    public function successRegistration()
+    {
+        $pageTitle = 'Success';
+        $metaTitle = "Success";
+        return view('frontend.candidate.success',compact("pageTitle","metaTitle"));
+    }
+
+   /**
+    * Function to store candidate profile info
+    * @param Illuminate\Http\Request $request
+    * @return json $response
+    */
+    public function storeProfileInfo(Request $request)
+    {
+        $response = $this->candidateService->storeProfileInfo($request);
+        echo json_encode($response);
+    }
+   /**
+    * Function to get country list 
+    * @param integer $id
+    * @return json $states
+    */
+   public function getCountryStates($id)
+   {       
+        $states = $this->countryService->getStatesByCountry($id);
+        echo json_encode($states);
+   }
+   /**
+    * Function to store candidate profile info
+    * @param Illuminate\Http\Request $request
+    * @return json $response
+    */
+   public function storeHobbies(Request $request)
+   {
+      $response = $this->candidateService->storeHobbies($request);
+      echo json_encode($response);
+   }
+   /**
+    * Function to store candidate profile info
+    * @param Illuminate\Http\Request $request
+    * @return json $response
+    */
+   public function storeCvSummary(Request $request)
+   {
+      $response = $this->candidateService->storeCvSummary($request);
+      echo json_encode($response);
+   }
+   /**
+    * Function to store candidate CV file
+    * @param Illuminate\Http\Request $request
+    * @return json $response
+    */
+   public function storeCv(Request $request)
+   {
+      $response = $this->candidateService->storeCv($request);
+      echo json_encode($response);
+   }
+   /**
+    * Function to remove banner image
+    * @return json $response
+    */
+   public function removeBannerImg()
+   {
+        $response =  $this->uploadService->deleteBannerImg();
+        echo json_encode($response);
+   }
+   /**
+    * Function to remove banner image
+    * @return json $response
+    */
+   public function removeProfileImg()
+   {
+        $response =  $this->uploadService->deleteProfileImg();
+        echo json_encode($response);
+   }
+   /**
+    * Function to store candidate profile info
+    * @param Illuminate\Http\Request $request
+    * @return json $response
+    */
+   public function storeSkills(Request $request)
+   {
+      $response = $this->candidateService->storeSkills($request);
+      echo json_encode($response);
+   }
+   /**
+    * Function to delete CV from server
+    * @param 
+    * @return json $resonse
+    */
+   public function deleteCv()
+   {
+     try{
+            $this->candidateService->deleteCv();
+            $message = __('messages.CV_DELETED_SUCCESSFULLY');
+            $staus = 200;
+     }catch(\Exception $e){
+           $message = $e->getMessage();
+           $staus = 400;
+     }
+     return response()->json(['success' => $staus, 'message' => $message]);
+   }
+  /**
+    * Function to store candidate profile info
+    * @param Illuminate\Http\Request $request
+    * @return json $response
+    */
+   public function getProfessionalInfo(Request $request){
+       $response = $this->candidateService->getProfessionalInfo($request);
+       echo json_encode($response);
+   }
+   /**
+    * Function to store candidate profile info
+    * @param Illuminate\Http\Request $request
+    * @return json $response
+    */
+   public function storeProfessionalInfo(Request $request){
+      $response = $this->candidateService->storeProfessionalInfo($request);
+      echo json_encode($response);
+   }
+
+   /**
+    * Function to store intro video
+    * @return json $response
+    */
+   public function storeIntroVideo(Request $request)
+   {
+      try{
+            $response = $this->candidateService->storeIntroVideo($request);
+            $message = __('messages.INTRO_VIDEO_UPLOADED_SUCCESSFULLY');
+            $staus = 200;
+     }catch(\Exception $e){
+           $message = $e->getMessage();
+           $staus = 400;
+           $response = [];
+     }
+     return response()->json(['success' => $staus, 'message' => $message ,'intro_info' => $response]);
+   }
+
+    /**
+    * Function to view candidate educational info
+    * @param Illuminate\Http\Request $request
+    * @return json $response
+    */
+   public function getEducationalInfo(Request $request){
+       $response = $this->candidateService->getEducationalInfo($request);
+       echo json_encode($response);
+   }
+   /**
+    * Function to store candidate educational info
+    * @param Illuminate\Http\Request $request
+    * @return json $response
+    */
+   public function storeEducationalInfo(Request $request){
+      $response = $this->candidateService->storeEducationalInfo($request);
+      echo json_encode($response);
+   }
+   /**
+    * Function to store candidate educational info
+    * @param Illuminate\Http\Request $request
+    * @return json $response
+    */
+   public function storeLanguageInfo(Request $request){
+      $response = $this->candidateService->storeLanguageInfo($request);
+      echo json_encode($response);
+   }
+   /**
+    * Function to remove intro video
+    * @param Illuminate\Http\Request $request
+    * @return json $response
+    */
+   public function removeIntroVideo(Request $request)
+   {      
+     try{
+            $this->candidateService->removeIntroVideo();
+            $message = __('messages.YOUR_INTRO_VIDEO_REMOVED_SUCCESSFULLY');
+            $staus = 200;
+     }catch(\Exception $e){
+           $message = $e->getMessage();
+           $staus = 400;
+     }
+     return response()->json(['success' => $staus, 'message' => $message]);
+   }
+    /**
+    * Function to remove language
+    * @param Illuminate\Http\Request $request
+    * @return json $response
+    */
+   public function deleteLanguageInfo(Request $request){
+       $response = $this->candidateService->deleteLanguageInfo($request);
+       echo json_encode($response);
+   }
+   /**
+    * Function to remove professional info
+    * @param Illuminate\Http\Request $request
+    * @return json $response
+    */
+   public function deleteProfessionalInfo(Request $request){
+       $response = $this->candidateService->deleteProfessionalInfo($request);
+       echo json_encode($response);
+   }
+   /**
+    * Function to remove educational info
+    * @param Illuminate\Http\Request $request
+    * @return json $response
+    */
+   public function deleteEducationalInfo(Request $request){
+       $response = $this->candidateService->deleteEducationalInfo($request);
+       echo json_encode($response);
+   }
+   /**
+    * Function to upload banner image from myHr Library
+    * @param Illuminate\Http\Request $request
+    * @return json $response
+    */
+   public function uploadBannerImageFromLibrary(Request $request)
+   {
+      $response = $this->candidateService->uploadBannerImageFromLibrary($request);
+      echo json_encode($response);
+   }
+
+   /**
+    * Function to search user profile
+    * @param Illuminate\Http\Request $request
+    * @return string $view
+    */
+   public function searchProfile(Request $request){
+      $activeClass = 'myNetwork'; 
+      $pageTitle = 'Search Profile';
+      $metaTitle = "Search Profile";
+      $search = $request->all();
+        //dd($search);
+        if(empty($search)){
+            $search['page'] = 1;
+            
+            $search['country_id'] = 14;
+            $states = $this->stateService->getStateById(14); // Austria country id 14
+        }
+        else if(isset($search['country_id']) && $search['country_id'] != ''){
+            $states = $this->stateService->getStateById($search['country_id']);
+        }else{
+            $search['country_id'] = 14;
+            $states = $this->stateService->getStateById(14); // Austria country id 14
+        }
+        $search['page_company'] = 1;
+        $countries = $this->countryService->getCountryList();
+        $language = $this->candidateService->getLanguageArr();
+        $companyList = $this->candidateService->getCompanyListArray();
+        $allProfileHeadline = $this->candidateService->getProfileHeadLines();
+        $searchResult = $this->candidateService->findCandidates($search);
+        $searchCompResult = $this->candidateService->findCompany($search);
+        if ($request->ajax()) {
+            $count = count($searchResult);
+            if($count == 0 && !isset($search['flag'])){
+                return 0;
+            }else{
+                $view = view('frontend.candidate.searchData',compact("pageTitle","metaTitle","states","countries","search","language","searchResult","allProfileHeadline","companyList"))->render();
+                return response()->json(['html'=>$view]);
+            }
+        }
+        return view('frontend.candidate.searchProfile',compact("pageTitle","metaTitle","states","countries","search","language","searchResult","allProfileHeadline","companyList","searchCompResult","activeClass"));
+   }
+   /**
+    * Function to search user profile
+    * @param Illuminate\Http\Request $request
+    * @return string $view
+    */
+    public function searchCompanyProfile(Request $request){
+        $pageTitle = 'Search Profile';
+        $metaTitle = "Search Profile";
+        $search = $request->all();
+        if(empty($search)){
+            $search['page_company'] = 1;
+        }
+        $searchCompResult = $this->candidateService->findCompany($search);
+        
+        if ($request->ajax()) {
+            $count = count($searchCompResult);
+            if($count == 0 && !isset($search['flag'])){
+                return 0;
+            }else{
+                $view = view('frontend.candidate.searchCompanyData',compact("pageTitle","metaTitle","search","searchCompResult"))->render();
+                return response()->json(['html'=>$view]);
+            }
+        }
+
+        return view('frontend.candidate.searchProfile',compact("pageTitle","metaTitle","search","searchCompResult"));
+    }
+   /**
+    * Function to post create
+    * @param Illuminate\Http\Request $request
+    * @return string $view
+    */
+    public function createPost(Request $request){
+        $response = $this->candidateService->createPost($request);
+        request()->session()->flash('success-msg', "Post created successfully" );
+        return redirect()->back();
+    }
+    /**
+    * Function to remove user post
+    * @return json $response
+    */
+   public function deleteUserPost(Request $request)
+   {
+        $response =  $this->candidateService->deleteUserPost($request);
+        echo json_encode($response);
+   }
+   /**
+    * Function to list user post comment
+    * @return json $response
+    */
+    public function listUserPostComment(Request $request)
+    {
+         $response =  $this->candidateService->listUserPostComment($request);
+         return $response;
+    }
+    /**
+    * Function to list user post comment
+    * @return json $response
+    */
+    public function reportComment(Request $request)
+    {
+         $response =  $this->candidateService->reportComment($request);
+         return $response;
+    }
+
+    /**
+     * Developer : Rumpa Ghosh 
+     * Function to list all followers
+     * @return string view
+     */
+    public function viewFollowers(Request $request,$msgId=''){
+        if($msgId != ''){
+            $msgId = decrypt($msgId);
+            $changeSeenStatus = $this->commonService->changeStatus($msgId);
+        }
+        $allFollowers = $this->candidateService->getFollowersList(Auth::user()->id);
+        $pageTitle = 'View Followers';
+        $metaTitle = "View Followers";
+        return view('frontend.candidate.viewFollowers',compact("pageTitle","metaTitle","allFollowers"));
+    }
+    /**
+    * Function to list user post comment
+    * @return json $response
+    */
+    public function followUnfollowUser(Request $request)
+    {
+         $response =  $this->candidateService->followUnfollowUser($request);
+         return $response;
+    }
+     /**
+     * Developer : Rumpa Ghosh 
+     * Function to list all followers
+     * @return string view
+     */
+    public function myNetwork(Request $request,$msgId='')
+    {
+        $activeClass = 'myNetwork';
+        if($msgId != ''){
+            $msgId = decrypt($msgId);
+            $changeSeenStatus = $this->commonService->changeStatus($msgId);
+        }
+        $search = $request->all();
+        $networkList = $this->candidateService->candidateNetworkList();
+        $connectedList = $this->candidateService->candidateConnectedList($search);
+        $pageTitle = 'My Network';
+        $metaTitle = "My Network";
+        return view('frontend.candidate.myNetwork',compact("pageTitle","metaTitle","networkList","connectedList",'search',"activeClass"));
+    }
+    /**
+     * Developer : Rumpa Ghosh 
+     * Function to list all followers
+     * @return string view
+     */
+    public function followingList(Request $request)
+    {
+        $search = $request->all();
+      
+        if(empty($search)){
+            $search['page'] = 1;
+        }
+        $search['page_company'] = 1;
+        $candidate = $this->candidateService->candidateFollowingList($search,2); // for candidate type
+        $company = $this->candidateService->candidateFollowingList($search,3);//for company type
+        if ($request->ajax()) {
+            $count = count($candidate);
+            if($count == 0 && !isset($search['flag'])){
+                return 0;
+            }else{
+                $view = view('frontend.candidate.candidateFollowingList',compact("pageTitle","metaTitle","search","candidate"))->render();
+                return response()->json(['html'=>$view]);
+            }
+        }
+        $pageTitle = 'Following List';
+        $metaTitle = "Following List";
+        return view('frontend.candidate.followingList',compact("pageTitle","metaTitle","company","candidate","search"));
+    }
+
+    /**
+    * Function to search user profile
+    * @param Illuminate\Http\Request $request
+    * @return string $view
+    */
+    public function companyFollowingList(Request $request){
+        $pageTitle = 'Following List';
+        $metaTitle = "Following List";
+        $search = $request->all();
+        if(empty($search)){
+            $search['page_company'] = 1;
+        }
+        $company = $this->candidateService->candidateFollowingList($search,3);//for company type
+        if ($request->ajax()) {
+            $count = count($company);
+            if($count == 0 && !isset($search['flag'])){
+                return 0;
+            }else{
+                $view = view('frontend.candidate.companyFollowingList',compact("pageTitle","metaTitle","search","company"))->render();
+                return response()->json(['html'=>$view]);
+            }
+        }
+
+        return view('frontend.candidate.searchProfile',compact("pageTitle","metaTitle","search","company"));
+    }
+
+    /**
+    * Function to list user post comment
+    * @return json $response
+    */
+    public function reportCompany(Request $request)
+    {
+         $response =  $this->candidateService->reportCompany($request);
+         return $response;
+    }
+    /**
+     * Developer : Rumpa
+     * Function to list job
+     *
+     */ 
+    public function jobList(Request $request,$msgId='')
+    {
+
+        // dd($request);
+        $activeClass = 'jobs';
+        $pageTitle="My Jobs";
+        $metaTitle="My Jobs";
+
+        if($msgId != ''){
+            $msgId = decrypt($msgId);
+            $changeSeenStatus = $this->commonService->changeStatus($msgId);
+        }
+        $search = $request->all();
+        // dd($search);
+        // if((!empty($search)) && (Auth::user()->is_notification_on == 1)){
+        //     $jobAlert = $this->candidateService->jobAlertHistory($search);
+        // }
+        if((isset($search['company'])) && ($search['company'] == 2)){
+            $selectedCountry1 = 14;
+            $selectedCountry = 14; // Austria country id 14 // Austria country id 14
+            $search['position_name'] = [];
+        }else if((isset($search['company'])) && ($search['company'] == 1)){
+            $selectedCountry = 14;
+            $selectedCountry1 = 14; // Austria country id 14
+            $search['company_name'] = '';
+        }else{
+            $selectedCountry = 14; // Austria country id 14
+            $selectedCountry1 = 14; // Austria country id 14
+            $search['company'] = 1;
+        }
+        $countries = $this->countryService->getCountryList();
+        $states = $this->stateService->getStateById($selectedCountry); // Austria country id 14
+        $states1 = $this->stateService->getStateById($selectedCountry1); // Austria country id 14
+        foreach($states as $key => $state)
+        {
+            $stateIds [] = $state->id;
+        }
+        $stateIds = array_filter(array_unique($stateIds));
+        $cities = $this->stateService->getAllSelectedCity($stateIds);
+        
+        $position = $this->candidateService->positionFor();
+        $company = $this->candidateService->companyName();
+        $company_json = json_encode($company);
+        if($request->cityy_comp != null)
+        {
+            $city = $this->stateService->getCityDetailsId($request->cityy_comp);
+            
+            $request->merge( ['citySearch' => $city->name]);
+        }
+        $jobList = $this->candidateService->jobList($request);
+        if((!empty($jobList) || $jobList != null) && Auth::user() != null){
+            $jobAlertSetting = $this->candidateService->chkAlertSetting($search);
+        }else{
+            $jobAlertSetting = 0;
+        }
+        //Advertisement
+        $advertiseArr = $this->candidateService->advertisement();
+        return view('frontend.candidate.jobList',compact('pageTitle','metaTitle','jobList','selectedCountry','countries','states','search','position','company','company_json','states1','selectedCountry1','activeClass','jobAlertSetting','advertiseArr','cities'));
+    }
+
+     /**
+     * Developer : Rumpa
+     * Function to list job
+     *
+     */ 
+    public function jobDetails(Request $request)
+    {
+        $firstJobArr = $this->candidateService->jobDetails($request);
+        $view = View::make('frontend.candidate.jobDetails', [
+            'firstJobArr'=> $firstJobArr
+        ]);
+        $html = $view->render();
+        return $html;
+    }
+
+     /**
+    * Function to list user post comment
+    * @return json $response
+    */
+    public function jobAlert(Request $request)
+    {
+         $response =  $this->candidateService->jobAlert($request);
+         return $response;
+    }
+     /**
+    * Function to search user profile
+    * @param Illuminate\Http\Request $request
+    * @return string $view
+    */
+    public function applyJob(Request $request,$jobId){
+        $data['pageTitle'] = $pageTitle = 'Following List';
+        $data['metaTitle'] = $metaTitle = "Following List";
+        $data['jobId'] = $jobId = decrypt($jobId);
+        $job['id'] = $jobId;
+
+        //Job details and company name which company posted this job
+        $jobDetails = $this->candidateService->jobDetails($job);
+        //dd($jobDetails['postState']);
+        if(($jobDetails == null) || $jobDetails['applied_by'] != 1){
+            request()->session()->flash('success-msg', __('messages.SORRY_SOMETHING_WENT_WRONG') );
+            return redirect()->back();
+        }
+        $data['companyName'] = $companyName = $jobDetails['company']['company_name'];
+
+        $data['countries'] = $countries = $this->countryService->getCountryList();
+        $data['states'] = $states = $jobDetails['postState']; 
+      
+        //$newCityArray = [];
+        if($jobDetails['postState'] != null){
+            $stateArr = [];
+            $cities = explode(",",$jobDetails['city']);
+            foreach($jobDetails['postState'] as $key=>$val){
+                array_push($stateArr,$val['state_id']);
+            }
+            // $allCity = $this->stateService->getAllSelectedCity($stateArr);
+            // if(!empty($allCity)){
+            //     foreach($allCity as $key1=>$value){
+            //         if(in_array($value['name'],$cities)){
+            //             array_push($newCityArray,$value);
+            //         }
+            //     }
+            // }
+        }
+        
+        //dd($newCityArray);
+
+        if(Auth::user())
+        {
+            //Candidate details who going to apply 
+            $userId = Auth::user()->id;
+            $data['candidateDetails'] = $candidateDetails = $this->candidateService->getDetails($userId);
+    
+            //Candidate's Current Company Designation start
+            $data['currentCompany'] = $currentCompany = '';
+            $data['currentJobTitle'] = $currentJobTitle = '';
+            if($candidateDetails['professionalInfo']->count()){
+                foreach($candidateDetails['professionalInfo'] as $key=>$val){
+                    if($val['currently_working_here'] == 1){
+                        $currentCompany = $val['company_name'];
+                        $currentJobTitle = $val['title'];
+                    }
+                }
+            }
+            $data['currentCompany'] = $currentCompany;
+            $data['currentJobTitle'] = $currentJobTitle;
+            //Candidate's Current Company Designation end
+            
+            //Applied Job with Candidate Info of 1st step of apply if available
+            $appliedJob = $this->candidateService->getAppliedJobDetails($jobId,$userId);
+            // dd($appliedJob);
+            $appliedAnswer = '';
+            $appliedVideoAnswer = '';
+            $appliedVideoAnswerAttempt = '';
+            if(!empty($appliedJob)){
+                //Applied Job with specific question's answers of 2nd and 3rd step of apply if available
+                $jobAppliedId = $appliedJob['job_applied_id'];
+                $appliedAnswer = $this->candidateService->getAppliedAnswer($jobAppliedId);
+    
+                //Aplied Job with interview video answer 3rd step
+                $appliedVideoAnswer = $this->candidateService->getAppliedVideoAnswer($jobAppliedId);
+    
+                //Aplied Job with interview video answer attempts 3rd step
+                $appliedVideoAnswerAttempt = $this->candidateService->getAttemptAnswer($jobId);
+    
+                //Selected country and state if saved as a draft
+                $selectedCountry = $appliedJob['country']['id'];
+                $selectedState = $appliedJob['state']['id'];
+                $selectedCity = $appliedJob['city']['id'];
+            }else{
+                //Selected country and state if going to aaply for first time
+                $selectedCountry = $jobDetails['country_id'];
+                $selectedState = $jobDetails['state_id'];
+                // if(!empty($newCityArray)){
+                //     $selectedCity = $newCityArray[0]['id'];
+                // }else{
+                //     $selectedCity = 0;
+                // }
+                
+            }
+            $data['selectedCountry'] = $selectedCountry;
+            $data['selectedState'] = $selectedState;
+            $data['appliedJob'] = $appliedJob;
+            $data['appliedAnswer'] = $appliedAnswer;
+            $data['appliedVideoAnswer'] = $appliedVideoAnswer;
+            $data['appliedVideoAnswerAttempt'] = $appliedVideoAnswerAttempt;
+            $data['user'] = $user = $this->candidateService->getDetails(Auth::user()->id);
+            $data['uploadedCV'] = $user->uploadJobCV($jobId);
+            $data['uploadOtherDoc'] = $user->uploadOtherDoc($jobId);
+            $data['profile'] = $user->profile;
+            
+        }
+        $data['jobDetails'] = $jobDetails;
+        $data['typ'] = '';
+
+        //dd($appliedJob['cover_letter']);
+        return view('frontend.candidate.applyJob', $data);
+    }
+
+    public function applyJobStoreInfo(Request $request){
+        $jobAndUserStatus = $this->candidateService->chkUserPostStatus($request['job_id']);
+        $jobAppliedStatus = $this->candidateService->chkUserJobAppliedStatus($request['job_id']);
+        if($jobAndUserStatus == 0 || $jobAppliedStatus == 0){
+            if($jobAndUserStatus == 0){
+                $message = __('messages.SORRY_SOMETHING_WENT_WRONG');
+            }else{
+                $message = __('messages.YOU_HAVE_ALREADY_APPLIED');
+            }
+            
+            $staus = 0;
+            $response = [];
+            return response()->json(['success' => $staus, 'message' => $message ,'intro_info' => $response]);
+        }else{
+         $response =  $this->candidateService->applyJobStoreInfo($request);
+         return $response;
+        }
+    }
+
+    /**
+    * Function to save job
+    * @param Illuminate\Http\Request $request
+    * @return string $view
+    */
+    public function saveJob(Request $request){
+        $response = $this->candidateService->saveJob($request);
+        return $response;
+    }
+    /**
+    * Function to save specific answer
+    * @param Illuminate\Http\Request $request
+    * @return string $view
+    */
+    public function applyJobStoreSpecificAns(Request $request){
+        $jobAndUserStatus = $this->candidateService->chkUserPostStatus($request['job_id']);
+        $jobAppliedStatus = $this->candidateService->chkUserJobAppliedStatus($request['job_id']);
+        if($jobAndUserStatus == 0 || $jobAppliedStatus == 0){
+            if($jobAndUserStatus == 0){
+                $message = __('messages.SORRY_SOMETHING_WENT_WRONG');
+            }else{
+                $message = __('messages.YOU_HAVE_ALREADY_APPLIED');
+            }
+            
+            $staus = 0;
+            $response = [];
+            return response()->json(['success' => $staus, 'message' => $message ,'intro_info' => $response]);
+        }else{
+            $response =  $this->candidateService->applyJobStoreSpecificAns($request);
+            return $response;
+        }
+        
+    }
+    
+    /**
+    * Function to save specific answer
+    * @param Illuminate\Http\Request $request
+    * @return string $view
+    */
+    public function applyJobStoreAllInfo(Request $request){
+        $jobAndUserStatus = $this->candidateService->chkUserPostStatus($request['job_id']);
+        $jobAppliedStatus = $this->candidateService->chkUserJobAppliedStatus($request['job_id']);
+        if($jobAndUserStatus == 0 || $jobAppliedStatus == 0){
+            if($jobAndUserStatus == 0){
+                $message = __('messages.SORRY_SOMETHING_WENT_WRONG');
+            }else{
+                $message = __('messages.YOU_HAVE_ALREADY_APPLIED');
+            }
+            
+            $staus = 0;
+            $response = [];
+            return response()->json(['success' => $staus, 'message' => $message ,'intro_info' => $response]);
+        }else{
+            $response =  $this->candidateService->applyJobStoreAllInfo($request);
+            return $response;
+        }
+        
+        
+    }
+     /**
+     * Developer : Rumpa
+     * Function to track job
+     *
+     */ 
+    public function trackJob(Request $request)
+    {
+
+        $pageTitle = 'Track Job';
+        $metaTitle = "Track Job";
+        $activeClass = 'jobs';
+        $search = $request->all();
+        if(empty($search)){
+            $search['page'] = 1;
+            $search['status'] = 2;
+        }
+        $jobList = $this->candidateService->trackJobList($search);
+        
+        if ($request->ajax()) {
+            $count = count($jobList);
+            if($count == 0 && !isset($search['flag'])){
+                return 0;
+            }else{
+                $view = view('frontend.candidate.trackJobAjaxData',compact('pageTitle','metaTitle','jobList','search','activeClass'))->render();
+                return response()->json(['html'=>$view]);
+            }
+            
+        }
+        
+        return view('frontend.candidate.trackJob',compact('pageTitle','metaTitle','jobList','search'));
+    }
+     /**
+     * Developer : Rumpa
+     * Function to track job
+     *
+     */ 
+    public function jobAlertSetting(Request $request)
+    {
+        $jobAlertHistory = $this->candidateService->getJobAlertHistory();
+        $pageTitle = 'Save Job Alert';
+        $metaTitle = "Save Job Alert";
+        return view('frontend.candidate.jobAlertSetting',compact('pageTitle','metaTitle','jobAlertHistory'));
+    }
+
+    /**
+    * Function to remove user post
+    * @return json $response
+    */
+   public function deleteJobAlert(Request $request)
+   {
+        $response =  $this->candidateService->deleteJobAlert($request);
+        echo json_encode($response);
+   }
+
+   /**
+    * Function to get country list 
+    * @param integer $id
+    * @return json $states
+    */
+    public function getStatesCity($id)
+    {       
+         $city = $this->stateService->getCityById($id);
+         echo json_encode($city);
+    }
+
+    /**
+    * Function to store intro video
+    * @return json $response
+    */
+   public function storeInterviewVideoAnswer(Request $request)
+   {
+     
+    try{
+            $jobAndUserStatus = $this->candidateService->chkUserPostStatus($request['job_id']);
+            $jobAppliedStatus = $this->candidateService->chkUserJobAppliedStatus($request['job_id']);
+            if($jobAndUserStatus == 0 || $jobAppliedStatus == 0){
+                if($jobAndUserStatus == 0){
+                    $message = __('messages.SORRY_SOMETHING_WENT_WRONG');
+                }else{
+                    $message = __('messages.YOU_HAVE_ALREADY_APPLIED');
+                }
+                
+                $staus = 0;
+                $response = [];
+            }else{
+                $response = $this->candidateService->storeInterviewVideoAnswer($request);
+                $message = __('messages.INTERVIEW_VIDEO_UPLOADED_SUCCESSFULLY');
+                $staus = 200;
+            }
+            
+
+     }catch(\Exception $e){
+           $message = $e->getMessage();
+           $staus = 400;
+           $response = [];
+     }
+
+     return response()->json(['success' => $staus, 'message' => $message ,'intro_info' => $response]);
+   }
+
+   /**
+    * Function to remove user post
+    * @return json $response
+    */
+    public function deleteInterviewVideo(Request $request)
+    {
+         $response =  $this->candidateService->deleteInterviewVideo($request);
+         echo json_encode($response);
+    }
+
+    /**
+    * Function to store intro video
+    * @return json $response
+    */
+   public function storeInterviewAttempt(Request $request)
+   {
+      $response = $this->candidateService->storeInterviewAttempt($request);
+      echo json_encode($response);
+   }
+
+   /*
+    @DevelopedBy: Rumpa Ghosh
+    @Date: 05/05/2020
+    @FunctionFor: Candidate manage profile.
+    @return : view
+    */
+    // public function activeYourAccount(Request $request,$id)
+    // {
+    //     dd(decrypt($id));
+    //     $request['id'] = decrypt($id);
+    //     $request['acc'] = 1;
+    //     $profileData = $this->candidateService->updateUserStatus($request->all());
+    //     if($profileData){
+    //        return redirect('/');
+    //     }
+    // }
+
+    /**
+    * Function to remove user post
+    * @return json $response
+    */
+    public function getSelectedVideo(Request $request)
+    {
+        $response =  $this->candidateService->getSelectedVideo($request);
+        echo json_encode($response);
+    }
+
+    /**
+     * Developer : Israfil
+     * Function to show Dashboard
+     *
+     */ 
+    public function viewPost(Request $request,$id,$msgId='')
+    {   
+         
+        if($msgId != ''){
+          $msgId = decrypt($msgId);
+          $changeSeenStatus = $this->messageService->changeStatus($msgId);
+          $getNotification = $this->messageService->getNotificationDetail($msgId);
+          if($getNotification == 0){
+            $request->session()->flash('success-msg', __('messages.NO_JOB_POST_AVAILABLE'));
+            return redirect()->back();  
+          }
+          
+        }
+        $id = decrypt($id);
+        $postData = $this->postService->getPostDetails($id); 
+        if((Auth::user())){
+          $user_type_id = Auth::user()->user_type;
+        }else{
+          $user_type_id = '';
+        }
+        
+        return view('frontend.candidate.viewPost',compact('postData','user_type_id'));
+    }
+    /**
+     * Developer : Israfil
+     * Function to show Dashboard
+     *
+     */ 
+    public function viewJobPost(Request $request,$id,$msgId='')
+    {   
+        if($msgId != ''){
+          $msgId = decrypt($msgId);
+          $changeSeenStatus = $this->messageService->changeStatus($msgId);
+          $getNotification = $this->messageService->getNotificationDetail($msgId);
+          if($getNotification == 0){
+            $request->session()->flash('success-msg', __('messages.NO_JOB_POST_AVAILABLE'));
+            return redirect()->back();  
+          }
+          
+        }
+        $id = decrypt($id);
+        $postData = $this->postService->getPostDetails($id); 
+        if(Auth::user()){
+          $user_type_id = Auth::user()->user_type;
+        }else{
+          $user_type_id = '';
+        }
+        
+        if($user_type_id = 2){
+            $user_type = 'candidate';
+        }elseif($user_type_id = 3){
+            $user_type = 'company';
+        }else{
+          $user_type = '';
+        }
+        return view('frontend.candidate.viewJobPost',compact('postData','user_type_id','user_type'));
+    }
+
+    /**
+    * Function to remove user post comment
+    * @return json $response
+    */
+   public function deleteUserComment(Request $request)
+   {
+        $response =  $this->candidateService->deleteUserComment($request);
+        echo json_encode($response);
+   }
+   public function storeServiceInfo(Request $request){
+    try {
+        $this->orderService->requestSubscription($request->all());
+        request()->session()->flash('success-msg', __('messages.SUBSCRIPTION_ORDER_REQUESTED_SUCCESSFULLY'));
+        return redirect()->back();
+    } catch (Exception $e) {
+        request()->session()->flash('error-msg', 'Something happened wrong.Please try again.');
+        return redirect()->back();
+    }
+   }
+
+     /**
+    * Function to list user post comment
+    * @return json $response
+    */
+    public function setJobAlertHistory(Request $request)
+    {
+        $search = $request->all();
+        $jobAlert = $this->candidateService->jobAlertHistory($search);
+        return $jobAlert;
+    }
+
+    public function applyJobDiscardInfo(Request $request){
+         $response =  $this->candidateService->applyJobDiscardInfo($request);
+         return $response;
+    }
+
+    /**
+     * See job application
+     */
+    public function viewApplication()
+    {
+        if(Auth::user())
+        {
+            //Candidate details who going to apply 
+            $data['userId'] = $userId = Auth::user()->id;
+            $data['appliedJobs'] = $appliedJob = Auth::user()->appliedJob;
+            return view('frontend.candidate.viewApplication', $data);
+        }
+    }
+
+    /**
+     * See edit Application page
+     */
+    public function editApplication(Request $request, $jobId)
+    {
+        $data['pageTitle'] = $pageTitle = 'Following List';
+        $data['metaTitle'] = $metaTitle = "Following List";
+        $data['jobId'] = $jobId = decrypt($jobId);
+        $job['id'] = $jobId;
+
+        $postData = $this->postService->getPostDetails($jobId);
+        $toDay = strtotime(date('Y-m-d'));
+        if((strtotime($postData['start_date']) >= $toDay) && (strtotime($postData['end_date']) <= $toDay))
+        {
+            $request->session()->flash('success-msg', __('messages.NO_JOB_POST_AVAILABLE'));
+            return redirect()->back(); 
+        }
+
+        //Job details and company name which company posted this job
+        $jobDetails = $this->candidateService->jobDetails($job);
+
+        if(($jobDetails == null) || $jobDetails['applied_by'] != 1){
+            request()->session()->flash('success-msg', __('messages.SORRY_SOMETHING_WENT_WRONG') );
+            return redirect()->back();
+        }
+        $data['companyName'] = $companyName = $jobDetails['company']['company_name'];
+
+        $data['countries'] = $countries = $this->countryService->getCountryList();
+        $data['states'] = $states = $jobDetails['postState']; 
+        if(Auth::user())
+        {
+            //Candidate details who going to apply 
+            $data['userId'] = $userId = Auth::user()->id;
+            //Applied Job with Candidate Info of 1st step of apply if available
+            $appliedJob = $this->candidateService->getAppliedJobDetails($jobId,$userId);
+            // dd($appliedJob);
+            $appliedAnswer = '';
+            $appliedVideoAnswer = '';
+            $appliedVideoAnswerAttempt = '';
+            if(!empty($appliedJob)){
+                //Applied Job with specific question's answers of 2nd and 3rd step of apply if available
+                $jobAppliedId = $appliedJob['job_applied_id'];
+                $appliedAnswer = $this->candidateService->getAppliedAnswer($jobAppliedId);
+    
+                //Aplied Job with interview video answer 3rd step
+                $appliedVideoAnswer = $this->candidateService->getAppliedVideoAnswer($jobAppliedId);
+    
+                //Aplied Job with interview video answer attempts 3rd step
+                $appliedVideoAnswerAttempt = $this->candidateService->getAttemptAnswer($jobId);
+    
+                //Selected country and state if saved as a draft
+                $selectedCountry = $appliedJob['country']['id'];
+                $selectedState = $appliedJob['state']['id'];
+                $selectedCity = $appliedJob['city']['id'];
+            }else{
+                //Selected country and state if going to aaply for first time
+                $selectedCountry = $jobDetails['country_id'];
+                $selectedState = $jobDetails['postState'][0]['state_id'];
+                
+            }
+            $data['selectedCountry'] = $selectedCountry;
+            $data['selectedState'] = $selectedState;
+            $data['appliedJob'] = $appliedJob;
+            $data['appliedAnswer'] = $appliedAnswer;
+            $data['appliedVideoAnswer'] = $appliedVideoAnswer;
+            $data['appliedVideoAnswerAttempt'] = $appliedVideoAnswerAttempt;
+            $data['user'] = $user = $this->candidateService->getDetails(Auth::user()->id);
+            $data['uploadedCV'] = $user->uploadJobCV($jobId);
+            $data['uploadOtherDoc'] = $user->uploadOtherDoc($jobId);
+            $data['profile'] = $user->profile;
+        }
+        $data['jobDetails'] = $jobDetails;
+        $data['typ'] = '';
+        return view('frontend.candidate.editApplication', $data);
+    }
+    
+    /**
+     * Update Job Application docs
+     */
+    public function updateApplication(Request $request, $jobId)
+    {
+        $job['id'] = $jobId;
+
+        $postData = $this->postService->getPostDetails($jobId);
+        $toDay = strtotime(date('Y-m-d'));
+        if((strtotime($postData['start_date']) >= $toDay) && (strtotime($postData['end_date']) <= $toDay))
+        {
+            $message = __('messages.NO_JOB_POST_AVAILABLE');
+            $staus = 0;
+            $response = [];
+            return response()->json(['success' => $staus, 'message' => $message ,'intro_info' => $response]);
+        }
+        else{
+            $message = "Documents are updated successfully.";
+            $staus = 0;
+            $response =  $this->candidateService->updateApplyJobInfo($request);
+            return response()->json(['success' => $staus, 'message' => $message ,'intro_info' => $response]);
+        }
+    }
+    
+    /**
+     * Delete Job Application
+     */
+    public function deleteApplication(Request $request)
+    {
+        $job['id'] = $jobId = $request->id;
+
+        $postData = $this->postService->getPostDetails($jobId);
+        $toDay = strtotime(date('Y-m-d'));
+        if((strtotime($postData['start_date']) >= $toDay) && (strtotime($postData['end_date']) <= $toDay))
+        {
+            $message = __('messages.NO_JOB_POST_AVAILABLE');
+            $staus = 0;
+            $response = [];
+            return response()->json(['success' => $staus, 'message' => $message ,'intro_info' => $response]);
+        }
+        else{
+            $message = "Application Deleted successfully.";
+            $staus = 0;
+            $response =  $this->candidateService->deleteApplication($request);
+            return response()->json(['success' => $staus, 'message' => $message ,'intro_info' => $response]);
+        }
+    }
+}

@@ -1,0 +1,25 @@
+<style>
+/* dashboard-placeholder-images */
+.dashboard-placeholder-images {
+	 margin-bottom:30px;
+}
+ .dashboard-placeholder-images .dashboard-placeholder-images-item {
+	 margin-bottom:30px;
+}
+ .dashboard-placeholder-images .dashboard-placeholder-images-item > .holder > .pic {
+	 padding-top: calc(( 68 / 100 ) * 100%);
+	 overflow: hidden;
+}
+ .dashboard-placeholder-images .dashboard-placeholder-images-item > .holder > .pic > .pic-placeholder {
+	 top: 0;
+	 right: 0;
+	 bottom: 0;
+	 left: 0;
+}
+ .dashboard-placeholder-images .dashboard-placeholder-images-item > .holder > .pic > .pic-placeholder img {
+	 width: 100%;
+	 height: 100%;
+	 object-fit: cover;
+	 object-position: center center;
+}
+</style>

@@ -1,0 +1,18 @@
+jobList.blade.php
+home.blade.php
+jobAdvertisement.blade.php
+job.js
+web.js (route method change)
+jobList.blade.php
+
+1-oct
+update in jobedit
+update in jobPost
+for quilljs cache clear
+ 
+1-oct
+update in jobedit remove questions
+update in joinus remove fields
+update register controller
+update companySignup.blade
+

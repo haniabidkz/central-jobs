@@ -1,0 +1,1 @@
+UPDATE `page_content_text` SET `language_type`='German' WHERE `language_type`='French';

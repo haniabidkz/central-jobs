@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <title>MyHR</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="description" content="" />
+      <meta name="keywords" content="" />
+      <link rel="icon" type="image/png" href="images/favicon.ico">
+      <link rel="stylesheet" type="text/css" href="public/frontend/css/animate.css">
+      <link rel="stylesheet" type="text/css" href="public/frontend/css/bootstrap.min.css">
+      <link rel="stylesheet" type="text/css" href="public/frontend/css/line-awesome.css">
+      <link rel="stylesheet" type="text/css" href="public/frontend/css/font-awesome.min.css">
+      <link rel="stylesheet" type="text/css" href="public/frontend/css/jquery.mCustomScrollbar.min.css">
+      <link rel="stylesheet" type="text/css" href="public/frontend/css/bootstrap-datetimepicker.min.css"  >
+      <link rel="stylesheet" type="text/css" href="public/frontend/css/dropzone.min.css" >
+      <link rel="stylesheet" type="text/css" href="public/frontend/css/tagsinput.css" > 
+      <link rel="stylesheet" type="text/css" href="public/frontend/css/swiper.min.css">
+      <link rel="stylesheet" type="text/css" href="public/frontend/css/style.css">
+      <link rel="stylesheet" type="text/css" href="public/frontend/css/responsive.css">
+   </head>
+   <body>
+      <!-- main-page-start -->
+      <div class="main-page">
+        <nav id="sidebar" class="sidebar-nav">
+            <div id="dismiss">
+               <i class="la la-close"></i>
+            </div>
+            <div class="sidebar-header">
+               <a class="d-block" href="index.html"><img src="images/logo-color.png" alt="Logo" class="img-fluid"></a>
+            </div>
+            <div class="profile-head">
+               <div class="profile-pic"><img src="images/resources/user.png" alt=""></div>
+               <h4>Hello!</h4>
+               <h4>Christina Fitzgerald</h4>
+            </div>
+            <ul class="nav navbar-nav">
+               <li class="nav-item dropdown dashboard-nav-item">
+                  <a class="nav-link" href="network.html">  My Profile  </a>
+                  <ul class="dropdown-menu">
+                     <li><a href="manageprofile.html">Manage Profile </a></li>
+                     <li><a href="view-follower.html">View Follower</a></li>
+                     <li><a href="settings.html">Alert Settings</a></li>
+                  </ul>
+               </li>
+               <li class="nav-item dashboard-nav-item">
+                  <a class="nav-link" href="dashboard.html">Dashboard</a>
+               </li>
+               <li class="nav-item dropdown dashboard-nav-item">
+                  <a class="nav-link" href="network.html">  Network </a>
+                  <ul class="dropdown-menu">
+                     <li><a class="dropdown-item" href="searchprofile.html">Search Profile </a> </li>
+                     <li><a class="dropdown-item" href="my-network.html">My Network</a> </li>
+                  </ul>
+               </li>
+               <li class="nav-item dashboard-nav-item">
+                  <a class="nav-link" href="candidate.html">Candidate</a>
+               </li>
+               <li class="nav-item dropdown dashboard-nav-item">
+                  <a class="nav-link" href="job.html">Jobs</a>
+                  <ul class="dropdown-menu">
+                     <li><a class="dropdown-item" href="my-job.html">My Jobs </a></li>
+                     <li><a class="dropdown-item" href="track-job.html">Track Jobs </a></li>
+                  </ul>
+               </li>
+               <li class="nav-item dashboard-nav-item">
+                  <a class="nav-link" href="messages.html">Messages</a>
+               </li>
+               <li class="nav-item all-nav">
+                  <a class="nav-link" href="about.html">About Us</a>
+               </li>
+               <li class="nav-item all-nav">
+                  <a class="nav-link" href="service.html">Services </a>
+               </li>
+               <li class="nav-item all-nav">
+                  <a class="nav-link" href="training.html">Training</a>
+               </li>
+            </ul>
+            <ul class="nav login-signup-btnlist">
+               <li>
+                  <a class="login-btn" href="sign-in.html">Login</a>
+               </li>
+               <li>
+                  <a class="signup-btn" href="sign-in.html">Join Us</a>
+               </li>
+            </ul>
+        </nav>
+         <div class="main-container">
+            <!-- header -->
+            <header class="header fixed-top" id="header">
+               <nav class="navbar navbar-expand-lg navbar-light">
+                  <div class="container">
+                     <a class="navbar-brand" href="index.html"><img src="public/frontend/images/logo-color2.png" alt="Logo" class="img-fluid"></a>
+                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="nav navbar-nav mr-auto">
+                           <li class="nav-item dashboard-nav-item">
+                              <a class="nav-link" href="dashboard.html">Dashboard</a>
+                           </li>
+                           <li class="nav-item dropdown dashboard-nav-item">
+                              <a class="nav-link" href="network.html">  Network </a>
+                              <ul class="dropdown-menu">
+                                 <li><a class="dropdown-item" href="searchprofile.html">Search Profile </a></li>
+                                 <li><a class="dropdown-item" href="my-network.html">My Network</a>
+                              </ul>
+                           </li>
+                           <li class="nav-item dashboard-nav-item">
+                              <a class="nav-link" href="candidate.html">Candidate</a>
+                           </li>
+                           <li class="nav-item dropdown dashboard-nav-item">
+                              <a class="nav-link" href="job.html">Jobs</a>
+                              <ul class="dropdown-menu">
+                                 <li><a class="dropdown-item" href="my-job.html">My Jobs </a></li>
+                                 <li><a class="dropdown-item" href="track-job.html">Track Jobs </a></li>
+                              </ul>
+                           </li>
+                           <li class="nav-item dashboard-nav-item">
+                              <a class="nav-link" href="messages.html">Messages</a>
+                           </li>
+                           <li class="nav-item all-nav">
+                              <a class="nav-link" href="about.html">About Us</a>
+                           </li>
+                           <li class="nav-item all-nav">
+                              <a class="nav-link" href="service.html">Services </a>
+                           </li>
+                           <li class="nav-item all-nav">
+                              <a class="nav-link" href="training.html">Training</a>
+                           </li>
+                        </ul>
+                     </div>
+                     <div class="right-nav-box">
+                        <div class="notifica dashboard-nav-item">
+                           <a href="#" title="" class="not-box-openm">
+                           <span class="noti"><img src="images/ic-notification.png" alt="notification" class="img-fluid"> <span></span></span>
+                           </a>
+                           <div class="notification-box msg" id="message">
+                              <div class="nt-title">
+                                 <h4>Setting</h4>
+                                 <a href="#" title="">Clear all</a>
+                              </div>
+                              <div class="nott-list">
+                                 <div class="notfication-details">
+                                    <div class="media">
+                                       <div class="noty-user-img">
+                                          <img src="images/resources/ny-img1.png" alt="">
+                                       </div>
+                                       <div class="media-body">
+                                          <h3><a href="messages.html" title="">Jassica William</a> <span>2 min ago</span></h3>
+                                          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do.</p>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="notfication-details">
+                                    <div class="media">
+                                       <div class="noty-user-img">
+                                          <img src="images/resources/ny-img1.png" alt="">
+                                       </div>
+                                       <div class="media-body">
+                                          <h3><a href="messages.html" title="">Jassica William</a> <span>2 min ago</span></h3>
+                                          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do.</p>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="notfication-details">
+                                    <div class="media">
+                                       <div class="noty-user-img">
+                                          <img src="images/resources/ny-img1.png" alt="">
+                                       </div>
+                                       <div class="media-body">
+                                          <h3><a href="messages.html" title="">Jassica William</a> <span>2 min ago</span></h3>
+                                          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do.</p>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="view-all-nots">
+                                    <a href="messages.html" class="btn site-btn" title="">View All Messsages</a>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="dropdown language-list">
+                           <a class="dropdown-toggle" href="forgot-password.html" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                           En
+                           </a>
+                           <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                              <a class="dropdown-item" href="#">Sp</a>
+                              <a class="dropdown-item" href="#">Pt</a>
+                           </div>
+                        </div>
+                        <div class="user-account dashboard-nav-item">
+                           <div class="user-info">
+                              <img src="images/user.png" alt="">
+                              <i class="fa fa-caret-down"></i>
+                           </div>
+                           <div class="user-account-settingss">
+                              <ul class="us-links">
+                                 <li><a href="myprofile.html">My Profile </a></li>
+                                 <li><a href="manageprofile.html">Manage Profile </a></li>
+                                 <li><a href="view-follower.html">View Follower</a></li>
+                                 <li><a href="settings.html">Alert Settings</a></li>
+                              </ul>
+                           </div>
+                        </div>
+                        <ul class="nav login-signup-btnlist">
+                           <li>
+                              <a class="login-btn" href="sign-in.html">Login</a>
+                           </li>
+                           <li>
+                              <a class="signup-btn" href="sign-in.html">Join Us</a>
+                           </li>
+                        </ul>
+                        <button type="button" id="sidebarCollapse" class="btn btn-info d-block d-lg-none">
+                        <img src="images/ic-burger-menu.svg" alt="burger-menu" class="img-fluid">
+                        </button>
+                     </div>
+                  </div>
+               </nav>
+            </header>
+            <!-- header End-->
+            <div class="header-gap"></div>
+            <!-- main -->
+            <main>
+               
+
+                <!--Job Advertisment Section-->
+                <section class="job-advertisment-block">
+                  <div class="container">
+                     <h2 class="text-center hdr-title">HOW WOULD YOU LIKE TO POST IT?</h2>
+                     <div class="job-post-block">
+
+                        <div class="sngl-job-post">
+                           <div class="post-pic-box ds-flex">
+                              <h3>FREE!</h3>
+                              <p>Unlimited posts for free!</p>
+                           </div>
+                           <div class="post-display-block">
+                              <h3 class="text-center">Candidates will see it like this:</h3>
+                              <div class="post-dispaly-innr">
+                                 <div class="post-item">
+                                    <span class="company-logo"><img src="http://dev107.developer24x7.com/cnp1356/public/frontend/images/open_uni.png" /></span>
+                                    <h5 class="job-title">Teacher IPC</h5>
+                                    <p class="company-name">NANA NAME</p>
+                                    <div class="ftr-items">
+                                       <p><i class="fa fa-calendar" aria-hidden="true"></i><span>2021-06-24</span></p>
+                                       <p><i class="fa fa-map-marker" aria-hidden="true"></i><span>Vienna</span></p>
+                                    </div>
+                                 </div>
+                                 <div class="post-item">
+                                    <span class="company-logo"><img src="http://dev107.developer24x7.com/cnp1356/public/frontend/images/open_uni.png" /></span>
+                                    <h5 class="job-title">Teacher IPC</h5>
+                                    <p class="company-name">ANNA FASHION</p>
+                                    <div class="ftr-items">
+                                       <p><i class="fa fa-calendar" aria-hidden="true"></i><span>2021-06-24</span></p>
+                                       <p><i class="fa fa-map-marker" aria-hidden="true"></i><span>Vienna</span></p>
+                                    </div>
+                                 </div>
+                                 <div class="post-item">
+                                    <span class="company-logo"><img src="http://dev107.developer24x7.com/cnp1356/public/frontend/images/open_uni.png" /></span>
+                                    <h5 class="job-title">Teacher IPC</h5>
+                                    <p class="company-name">CAPITAL NUMBERS</p>
+                                    <div class="ftr-items">
+                                       <p><i class="fa fa-calendar" aria-hidden="true"></i><span>2021-06-24</span></p>
+                                       <p><i class="fa fa-map-marker" aria-hidden="true"></i><span>Vienna</span></p>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="btn-wrap">
+                              <a href="#" class="btn-yellow">Free</a>
+                           </div>
+                        </div>
+
+                        <div class="sngl-job-post">
+                           <div class="post-pic-box">
+                              <h3>HIGHLIGHT!</h3>
+                              <p>Only € 25 per post!</p>
+                              <i class="offer-icon"><img src="public/frontend/images/special-offer.svg" alt="" /></i>
+                           </div>
+                           <div class="post-display-block">
+                              <h3 class="text-center">Candidates will see it like this:</h3>
+                              <div class="post-dispaly-innr">
+                                 <div class="post-item highlighted">
+                                    <span class="company-logo"><img src="http://dev107.developer24x7.com/cnp1356/public/frontend/images/open_uni.png" /></span>
+                                    <h5 class="job-title">Teacher IPC</h5>
+                                    <p class="company-name">NANA NAME</p>
+                                    <div class="ftr-items">
+                                       <p><i class="fa fa-calendar" aria-hidden="true"></i><span>2021-06-24</span></p>
+                                       <p><i class="fa fa-map-marker" aria-hidden="true"></i><span>Vienna</span></p>
+                                    </div>
+                                 </div>
+                                 <div class="post-item highlighted">
+                                    <span class="company-logo"><img src="http://dev107.developer24x7.com/cnp1356/public/frontend/images/open_uni.png" /></span>
+                                    <h5 class="job-title">Teacher IPC</h5>
+                                    <p class="company-name">ANNA FASHION</p>
+                                    <div class="ftr-items">
+                                       <p><i class="fa fa-calendar" aria-hidden="true"></i><span>2021-06-24</span></p>
+                                       <p><i class="fa fa-map-marker" aria-hidden="true"></i><span>Vienna</span></p>
+                                    </div>
+                                 </div>
+                                 <div class="post-item highlighted">
+                                    <span class="company-logo"><img src="http://dev107.developer24x7.com/cnp1356/public/frontend/images/open_uni.png" /></span>
+                                    <h5 class="job-title">Teacher IPC</h5>
+                                    <p class="company-name">CAPITAL NUMBERS</p>
+                                    <div class="ftr-items">
+                                       <p><i class="fa fa-calendar" aria-hidden="true"></i><span>2021-06-24</span></p>
+                                       <p><i class="fa fa-map-marker" aria-hidden="true"></i><span>Vienna</span></p>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="btn-wrap">
+                              <a href="#" class="btn-yellow">Pay Now</a>
+                              <p>
+                                 Highlight your post and get more<br>
+                                 attention from candidates!
+                              </p>
+                           </div>
+                        </div>
+                        
+                     </div>
+                  </div>
+                </section>
+                <!--/Job Advertisment Section-->
+
+
+
+            </main>
+            <!-- main End -->
+            <!--footer start-->
+            <footer>
+               <div class="footy-sec">
+                  <div class="container">
+                     <div class="row">
+                        <div class="col-12">
+                           <div class="d-flex justify-content-between">
+                              <ul>
+                                 <li><a href="privacy.html" title="">Privacy Policy</a></li>
+                                 <li><a href="terms.html" title="">Terms of use</a></li>
+                                 <li><a href="contact.html" title="">Contact us</a></li>
+                                 <li><a href="tips.html" title="">Tips</a></li>
+                              </ul>
+                              <p>© Copyright MyHR 2020</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </footer>
+            <!--footer end-->
+         </div>
+         <div class="overlay"></div>
+      </div>
+      <!-- main-page -->
+
+
+      <script src="js/jquery.min.js"></script>
+      <script src="js/popper.js"></script>
+      <script src="js/bootstrap.min.js"></script>
+      <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+      <script src="js/moment.min.js"></script>
+      <script src="js/bootstrap-datetimepicker.min.js"></script>
+      <script src="js/dropzone.min.js"></script>
+      <script src="js/aos.js"></script>
+      <script src="js/jquery.easing.min.js"></script>
+      <script src="js/BsMultiSelect.js"></script>
+      <script src="js/tagsinput.js"></script> 
+      <script src="js/swiper.min.js"></script>
+      <script src="js/custom.js"></script>
+   </body>
+</html>
+

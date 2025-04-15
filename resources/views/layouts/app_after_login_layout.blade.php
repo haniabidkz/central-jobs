@@ -1,0 +1,8 @@
+
+    @include('frontend.includes.header_after_login')
+
+    @yield('content')
+
+
+    @include('frontend.includes.footer_after_login')
+

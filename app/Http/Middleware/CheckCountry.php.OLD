@@ -1,0 +1,63 @@
+<?php
+
+namespace App\Http\Middleware;
+use Auth;
+use Closure;
+use GuzzleHttp\Client;
+use Illuminate\Http\Response;
+use Stevebauman\Location\Facades\Location;
+use Illuminate\Http\Request;
+
+class CheckCountry
+{
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
+     */
+    public function handle($request, Closure $next)
+    {
+        
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])){
+            $ip=$_SERVER['HTTP_CLIENT_IP'];
+        }elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])){
+            $ip=$_SERVER['HTTP_X_FORWARDED_FOR'];
+        }else{
+            $ip=$_SERVER['REMOTE_ADDR'];
+        }
+        
+        $body = Location::get($ip);
+       
+        if($body == false){
+            if(env('APP_URL') == 'http://localhost/my-hr/'){
+                return $next($request);
+            }
+            else if(env('APP_URL') == 'http://localhost/silvia/cnp1356/'){
+                return $next($request);
+            }
+            else if(env('APP_URL') == 'http://dev.uiplonline.com/my-hr/public/'){
+                return $next($request);
+            }
+            else if(env('APP_URL') == 'https://staging.uiplonline.com/my-hr/public/'){
+                return $next($request);
+            }
+            else if(env('APP_URL') == 'http://dev107.developer24x7.com/cnp1356/public/'){
+                return $next($request);
+            }else{
+                return new Response(view('frontend.home.accessDeny'));
+            }
+            
+        }
+        else if(env('APP_URL') == 'https://central-jobs.com/public/' || env('APP_URL') == 'https://central-jobs.com/'){
+            return $next($request);
+        }
+#        else if(((isset($body->countryCode)) && $body->countryCode != 'AT')){
+#            return new Response(view('frontend.home.accessDeny'));
+        }
+         return $next($request);
+    }
+
+    
+}
