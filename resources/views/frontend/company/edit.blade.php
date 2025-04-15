@@ -411,7 +411,8 @@
                   <div class="login-form">
                      <div class="row">
                         <div class="col-sm-12 details-panel-header">
-                                                    <h6>{!! __('messages.EDIT_PROFILE_MESSAGE') !!}</h6>
+                                                    <h6>{!! __('messages.EDIT_PROFILE_MESSAGE', ['link' => '<a href="/contact-us">contact us</a>']) !!}</h6>
+
                         </div>
                                              </div>
                   </div>

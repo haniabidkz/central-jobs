@@ -9,7 +9,7 @@ return [
     'EMPLOYER'      => 'Employer',
     'ABOUT_US'      => 'About Us',
 
-'EDIT_PROFILE_MESSAGE' => 'To change your e-mail, name of the company or commercial register, please request it via <a href="/contact-us">contact us</a> or send an e-mail to this address: info@central-jobs.com',
+    'EDIT_PROFILE_MESSAGE' => 'To change your e-mail, name of the company or commercial register, please request it via :link or send an e-mail to this address: info@central-jobs.com',
 
     'SERVICES'      => 'Services',
     'TRAINING'      => 'Training',
