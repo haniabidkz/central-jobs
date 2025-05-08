@@ -42,12 +42,18 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="{{url('/admin/jobs')}}" class="nav-link {{isset($activeModule) && $activeModule=='jobs' ? 'active': ''}}">
+                    <i class=" nav-icon fa fa-briefcase"></i>
+                        <p>Jobs</p>
+                    </a>
+                </li>
+               
+                <li class="nav-item">
                     <a href="{{url('/admin/job-list')}}" class="nav-link {{isset($activeModule) && $activeModule=='job' ? 'active': ''}}">
                     <i class=" nav-icon fa fa-briefcase"></i>
                         <p>Job Management</p>
                     </a>
                 </li>
-               
                
                 <li class="nav-item has-treeview {{isset($activeModule) && in_array($activeModule,['category','video']) ? 'menu-open': ''}}">
                     <a href="#" class="nav-link {{isset($activeModule) && in_array($activeModule,['category','video']) ? 'active': ''}}">

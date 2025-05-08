@@ -146,33 +146,9 @@
                                     </span>
                                     </div>
                                  </div>
-                                 <div class="col-12 col-sm-12 col-md-6">
-                                    <div class="form-view">
-                                       <label class="label-tag">{{ __('messages.COMPANY_BUSINESS') }} :</label> 
-                                       <span class="business_name_func"> 
-                                       <?php echo ($profileData['profile']['business_name']?$profileData['profile']['business_name']:'');?>
-                                    </span>
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-12 col-md-6">
-                                    <div class="form-view">
-                                       <label class="label-tag">{{ __('messages.TELEPHONE_NO') }} :</label> 
-                                       <span class="telephone_func"> 
-                                       <?php echo ($profileData['telephone']?base64_decode($profileData['telephone']):'');?>
-                                       </span>
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-12 col-md-6">
-                                    <div class="form-view">
-                                       <label class="label-tag">{{ __('messages.CONTACT_NAME') }} :</label> 
-                                      <span class="first_name_func"> 
-                                       <?php echo ($profileData['first_name']?base64_decode($profileData['first_name']):''); echo ' '; ?> 
-                                    </span>
-                                    <span class="last_name_func"> 
-                                        <?php echo ($profileData['last_name']?$profileData['last_name']:'');?>
-                                     </span>
-                                    </div>
-                                 </div>
+                                
+                                
+                                
                                  <div class="col-12 col-sm-12 col-md-6">
                                     <div class="form-view">
                                        <label class="label-tag">{{ __('messages.COMPANY_EMAIL') }} :</label> 
@@ -189,54 +165,7 @@
                                        </span>
                                     </div>
                                  </div>
-                                 <div class="col-12 col-sm-12 col-md-6">
-                                    <div class="form-view">
-                                       <label class="label-tag">{{ __('messages.COUNTRY') }} :</label> 
-                                       <span class="country_id_func">
-                                       <?php echo (isset($profileData['country']['name'])?$profileData['country']['name']:'');?>
-                                    </span>
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-12 col-md-6">
-                                    <div class="form-view">
-                                       <label class="label-tag">{{ __('messages.STATE') }} :</label> 
-                                       <span class="state_id_func">
-                                       <?php echo (isset($profileData['state']['name'])?$profileData['state']['name']:'');?>
-                                       </span>
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-12 col-md-6">
-                                    <div class="form-view">
-                                       <label class="label-tag">{{ __('messages.CITY') }} :</label> 
-                                       <span class="city_id_func">
-                                       <?php echo ($profileData['city_id']?$profileData['city_id']:'');?>
-                                       </span>
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-12 col-md-6">
-                                    <div class="form-view">
-                                       <label class="label-tag">{{ __('messages.ADDRESS_LINE1') }} :</label> 
-                                       <span class="address1_func">
-                                       <?php echo ($profileData['address1']?$profileData['address1']:'');?>
-                                    </span>
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-12 col-md-6">
-                                    <div class="form-view">
-                                       <label class="label-tag">{{ __('messages.ADDRESS_LINE2') }} :</label> 
-                                       <span class="address2_func">
-                                       <?php echo ($profileData['address2']?$profileData['address2']:'');?>
-                                    </span>
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-12 col-md-6">
-                                    <div class="form-view">
-                                       <label class="label-tag">{{ __('messages.ZIP_CODE') }} :</label> 
-                                       <span class="postal_func">
-                                          <?php echo ($profileData['postal']?$profileData['postal']:'');?>
-                                       </span>
-                                    </div>
-                                 </div>
+                        
                                  
                               </div>
                            </div>

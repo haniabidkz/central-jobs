@@ -161,6 +161,7 @@ class Company extends Controller
     @return : string view
     */
     public function editProfile(){
+       
         $profileData = $this->companyService->getDetails(Auth::user()->id);
         //$profileData['country_id'] = 14; // Austria
         $countries = $this->countryService->findAllCountryListWithStates();
