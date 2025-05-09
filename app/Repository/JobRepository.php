@@ -80,47 +80,62 @@ class JobRepository {
                      //$to = $to . " 12:59:59";
             $condition [] = ['end_date','<=',$to];
         }
-        if(request()->input('status',false) != false){
-            $date = date('d-m-Y');
-            if($data['status'] == 1){
-                $startToday = date('Y-m-d',strtotime($date));
-                $startToday    = Carbon::parse($startToday)
-                     ->startOfDay()        // 2018-09-29 00:00:00.000000
-                     ->toDateTimeString();
+        // if(request()->input('status',false) != false){
+        //     $date = date('d-m-Y');
+        //     if($data['status'] == 1){
+        //         $startToday = date('Y-m-d',strtotime($date));
+        //         $startToday    = Carbon::parse($startToday)
+        //              ->startOfDay()        // 2018-09-29 00:00:00.000000
+        //              ->toDateTimeString();
 
-                $filterData = date('Y-m-d',strtotime($date));
-                $today    = Carbon::parse($filterData)
-                        ->endOfDay()        // 2018-09-29 00:00:00.000000
-                        ->toDateTimeString();
-                        //$to = $to . " 12:59:59";
-                $condition [] = ['start_date','<=',$startToday];
-                $condition [] = ['end_date','>=',$today];
+        //         $filterData = date('Y-m-d',strtotime($date));
+        //         $today    = Carbon::parse($filterData)
+        //                 ->endOfDay()        // 2018-09-29 00:00:00.000000
+        //                 ->toDateTimeString();
+        //                 //$to = $to . " 12:59:59";
+        //         $condition [] = ['start_date','<=',$startToday];
+        //         $condition [] = ['end_date','>=',$today];
+        //     }
+        //     if($data['status'] == 2){
+        //         $startToday = date('Y-m-d',strtotime($date));
+        //         $startToday    = Carbon::parse($startToday)
+        //              ->startOfDay()        // 2018-09-29 00:00:00.000000
+        //              ->toDateTimeString();
+
+        //         $filterData = date('Y-m-d',strtotime($date));
+        //         $today    = Carbon::parse($filterData)
+        //                 ->endOfDay()        // 2018-09-29 00:00:00.000000
+        //                 ->toDateTimeString();
+        //                 //$to = $to . " 12:59:59";
+        //         $condition [] = ['start_date','<=',$startToday];
+        //         $condition [] = ['end_date','<',$today];
+        //     }
+        //     if($data['status'] == 3){
+        //         $filterData = date('Y-m-d',strtotime($date));
+        //         $today    = Carbon::parse($filterData)
+        //                 ->startOfDay()        // 2018-09-29 00:00:00.000000
+        //                 ->toDateTimeString();
+        //                 //$to = $to . " 12:59:59";
+        //         $condition [] = ['start_date','>',$today];
+        //     }
+           
+        // }
+        
+        if(request()->input('status',false) != false){
+     
+            if($data['status'] == 1){
+                $condition [] = ['job_status','=',1];
             }
             if($data['status'] == 2){
-                $startToday = date('Y-m-d',strtotime($date));
-                $startToday    = Carbon::parse($startToday)
-                     ->startOfDay()        // 2018-09-29 00:00:00.000000
-                     ->toDateTimeString();
-
-                $filterData = date('Y-m-d',strtotime($date));
-                $today    = Carbon::parse($filterData)
-                        ->endOfDay()        // 2018-09-29 00:00:00.000000
-                        ->toDateTimeString();
-                        //$to = $to . " 12:59:59";
-                $condition [] = ['start_date','<=',$startToday];
-                $condition [] = ['end_date','<',$today];
+                $condition [] = ['job_status','=',2];
             }
             if($data['status'] == 3){
-                $filterData = date('Y-m-d',strtotime($date));
-                $today    = Carbon::parse($filterData)
-                        ->startOfDay()        // 2018-09-29 00:00:00.000000
-                        ->toDateTimeString();
-                        //$to = $to . " 12:59:59";
-                $condition [] = ['start_date','>',$today];
+            
+                $condition [] = ['job_status','=',0];
+   
             }
            
         }
-        
         if(request()->input('state',false) != false){
             $condition1  = [['state_id','=',$data['state']]];
             $relationTbl = 'postState';

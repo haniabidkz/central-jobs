@@ -645,13 +645,14 @@ class CompanyService {
                 ->toDateTimeString();
         $endToday = strtotime($endToday);    
 
-        if((strtotime($data['start_date']) >= $toDay) && (strtotime($data['start_date']) <= $endToday)){ 
-            $postData['job_status'] = 1;
-        }else if(strtotime($data['end_date']) < $toDay){ 
-            $postData['job_status'] = 2;
-        }else if(strtotime($data['start_date']) > $endToday){ 
-            $postData['job_status'] = 0;
-        }
+        $postData['job_status'] = 0;
+        // if((strtotime($data['start_date']) >= $toDay) && (strtotime($data['start_date']) <= $endToday)){ 
+        //     $postData['job_status'] = 0;
+        // }else if(strtotime($data['end_date']) < $toDay){ 
+        //     $postData['job_status'] = 0;
+        // }else if(strtotime($data['start_date']) > $endToday){ 
+        //     $postData['job_status'] = 0;
+        // }
         $post = $this->jobPost->create($postData);
         //INSERT STATE TBL DATA
         // foreach($data['state_id'] as $key=>$val){
@@ -966,6 +967,7 @@ class CompanyService {
     * @return array obj $companyPost
     */
     public function jobList($request){ 
+        
         $data = $request->all();
         //dd($data);
         $userId = Auth::user()->id; 
@@ -1003,6 +1005,22 @@ class CompanyService {
                      //$to = $to . " 12:59:59";
             $condition [] = ['end_date','<=',$to];
         }
+        // if(request()->input('status',false) != false){
+        //     $date = date('d-m-Y');
+        //     if($data['status'] == 1){
+        //         $condition [] = ['job_status','=',1];
+        //     }
+        //     if($data['status'] == 2){
+        //         $condition [] = ['job_status','=',2];
+        //     }
+        //     if($data['status'] == 3){
+        //         $condition [] = ['job_status','=',0];
+        //     }
+           
+        // }else{
+        //     $condition [] = ['job_status','=',1];
+        // }
+    
         if(request()->input('status',false) != false){
             $date = date('d-m-Y');
             if($data['status'] == 1){
@@ -1012,13 +1030,12 @@ class CompanyService {
                 $condition [] = ['job_status','=',2];
             }
             if($data['status'] == 3){
+            
                 $condition [] = ['job_status','=',0];
+           
             }
            
-        }else{
-            $condition [] = ['job_status','=',1];
         }
-        
         if(request()->input('state',false) != false){
             $condition1  = [['state_id','=',$data['state']]];
             $relationTbl = 'postState';

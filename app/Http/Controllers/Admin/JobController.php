@@ -57,8 +57,7 @@ class JobController extends Controller
 
         $pageTitle = 'Jobs';
 
-        $jobs = JobPost::where('status', 0)
-            ->whereIn('job_status', [0,3])
+        $jobs = JobPost::whereIn('job_status', [0,3])
             ->with(['user'])
             ->paginate(env('ADMIN_PAGINATION_LIMIT'));
 

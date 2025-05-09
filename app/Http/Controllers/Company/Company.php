@@ -375,7 +375,7 @@ class Company extends Controller
      *
      */ 
     public function jobList(Request $request)
-    {
+    {      
         $search = $request->all();
         //dd($request->city);
         $selectedCountry = 14; // Austria country id 14
