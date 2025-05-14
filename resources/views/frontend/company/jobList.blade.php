@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <main>
+
 <section class="section section-myjob">
 <div class="container">
    <div class="row">
@@ -181,10 +182,19 @@
                                     ?>
                                  </td>
                                  <td>{{date('Y-m-d',strtotime($job['start_date']))}}</td>
-                                 <td>{{date('Y-m-d',strtotime($job['end_date']))}}</td>
+                                 <td>{{date('Y-m-d',strtotime($job['end_date']))}}
+
+                                    {{$job->job_status}}
+                                 </td>
                                  <td>
                                  <?php $status=''; $status_color=''; $toDay = strtotime(date('Y-m-d')); 
-                                 if((strtotime($job['start_date']) <= $toDay) && (strtotime($job['end_date']) >= $toDay)){ 
+
+
+                                 if($job['job_status'] == 0){
+                                    $status = __('messages.PENDING');
+                                    $status_color = 'btn-warning';
+                                 }else{
+                                    if((strtotime($job['start_date']) <= $toDay) && (strtotime($job['end_date']) >= $toDay)){ 
                                        $status =  __('messages.ONGOING');
                                        $status_color = 'btn-success';
                                     }else if(strtotime($job['end_date']) < $toDay){ 
@@ -193,7 +203,9 @@
                                     }else if(strtotime($job['start_date']) > $toDay){ 
                                        $status = __('messages.PENDING');
                                        $status_color = 'btn-warning';
-                                    }?>
+                                    }
+                                 }
+                               ?>
                                  <button type="button" class="btn {{$status_color}} btn-lg disable-cursor">{{$status}}</button>
                                  </td>
                                  <td style="text-align:center;">

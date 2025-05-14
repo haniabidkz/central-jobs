@@ -20,6 +20,7 @@ class CompanyRepository {
      */
     public function get($search = '') {
         $company = User::where('user_type',3)->with('country','state','job','profile');
+       
         if((isset($search['name'])) && ($search['name'] != null)){
            // dd($search['name']);
             $company = $company->where('first_name','Like','%'.trim($search['name']).'%');

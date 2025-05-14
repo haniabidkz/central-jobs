@@ -46,6 +46,7 @@ class CompanyController extends Controller {
     */
 
     public function index(Request $request) {
+      
         $search = $request->all();
         $states = $this->stateService->getStateList(); 
         if(!empty($search) && (isset($search['reset']) && ($search['reset'] == 1))){

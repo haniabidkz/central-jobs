@@ -57,7 +57,7 @@ class JobController extends Controller
 
         $pageTitle = 'Jobs';
 
-        $jobs = JobPost::whereIn('job_status', [0,3])
+        $jobs = JobPost::whereIn('job_status', [0, 3])
             ->with(['user'])
             ->paginate(env('ADMIN_PAGINATION_LIMIT'));
 
@@ -120,7 +120,8 @@ class JobController extends Controller
             'status' => $job->status,
             'job_status' => $job->job_status
         ], function ($message) use ($job, $statusMap, $emailType) {
-            $message->to($job->user->email)
+            $email = base64_encode($job->user->email);
+            $message->to($email)
                 ->subject($statusMap[$emailType]['subject']);
         });
     }
