@@ -55,12 +55,12 @@ class JobController extends Controller
     public function jobs(Request $request)
     {
 
+
         $pageTitle = 'Jobs';
 
         $jobs = JobPost::whereIn('job_status', [0, 3])
             ->with(['user'])
             ->paginate(env('ADMIN_PAGINATION_LIMIT'));
-
 
         $countries = $this->countryService->getCountryList();
         $companyList = $this->postRepo->getCompanyList();
@@ -99,7 +99,11 @@ class JobController extends Controller
             return redirect()->back();
         }
     }
-
+    function isBase64Encoded($string)
+    {
+        $decoded = base64_decode($string, true);
+        return $decoded !== false && base64_encode($decoded) === $string;
+    }
     private function sendApprovalEmail($job, $approved)
     {
         $emailType = $approved ? 'accepted' : 'rejected';
@@ -120,7 +124,13 @@ class JobController extends Controller
             'status' => $job->status,
             'job_status' => $job->job_status
         ], function ($message) use ($job, $statusMap, $emailType) {
-            $email = base64_encode($job->user->email);
+            $emailRaw = $job->user->email;
+
+            if ($this->isBase64Encoded($emailRaw)) {
+                $email = base64_decode($emailRaw);
+            } else {
+                $email = $emailRaw;
+            }
             $message->to($email)
                 ->subject($statusMap[$emailType]['subject']);
         });

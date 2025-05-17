@@ -57,8 +57,10 @@
                                 <tbody>
 
                                     @foreach($jobs as $job)
+                                  
                                     <tr>
-                                        <td>{{($job['user']) ? $job['user']['company_name']:''}}</td>
+                                        <td>{{ $job->user->company_name ?? $job->user->first_name ?? '-' }}
+</td>
                                         <td><a href="{{route('detail_job',encrypt($job['id']))}}">{{$job->title}}</a></td>
                                         <td>{{date('Y-m-d',strtotime($job['start_date']))}}</td>
                                         <td>{{date('Y-m-d',strtotime($job['end_date']))}}</td>
