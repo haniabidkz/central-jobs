@@ -59,7 +59,12 @@
                                     @foreach($jobs as $job)
                                   
                                     <tr>
-                                        <td>{{ $job->user->company_name ?? $job->user->first_name ?? '-' }}
+                                        <td>
+                                            {{ (base64_encode(base64_decode($job->user->company_name ?? '-', true)) === ($job->user->company_name ?? '-')) 
+    ? base64_decode($job->user->company_name ?? '-') 
+    : ($job->user->company_name ?? '-') }}
+    
+
 </td>
                                         <td><a href="{{route('detail_job',encrypt($job['id']))}}">{{$job->title}}</a></td>
                                         <td>{{date('Y-m-d',strtotime($job['start_date']))}}</td>
