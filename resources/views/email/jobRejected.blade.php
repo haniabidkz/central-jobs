@@ -7,5 +7,11 @@
 <p> Wir bedauern, Ihnen mitteilen zu müssen, dass Ihre Stellenanzeige <strong>{{ $job->title }}</strong> nicht veröffentlicht 
 werden konnte, da sie nicht mit unseren Richtlinien übereinstimmt.</p>
 
+<p style="
+    font-size: 10px;
+    text-align: center;
+    padding-top: 40px !important;
+"><a href="https://www.central-jobs.com"><b>www.central-jobs.com</b></a></p>
+
 
 
