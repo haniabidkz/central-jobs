@@ -565,7 +565,7 @@ return [
     'INTRO_VIDEO_LINE4' => '(Wir empfehlen, das Video an einem ruhigen Ort ohne Außengeräusche aufzunehmen. Tragen Sie professionelle Kleidung, als ob Sie in einem Vorstellungsgespräch wären! Unternehmen können dieses Video sehen und Sie für ein Stellenangebot kontaktieren!)',
     'RECORD_YOUR_VIDEO' => 'Video aufnehmen',
     'YOUR_EMAIL_SUBSCRIBED_SUCCESSFULLY' => 'Ihre E-Mail erfolgreich abonniert.',
-    'I_WISH_TO_RECEIVE_NEWSLETTER' => 'Ja, ich möchte den Newsletter abonnieren',
+    'I_WISH_TO_RECEIVE_NEWSLETTER' => 'Ich möchte den Newsletter (Tipps zur Rekrutierung) erhalten. ',
     'I_HAVE_READ_AND_AGREE_TO_THE' => 'Ich stimme den ',
     'I_HAVE_READ_AND_AGREE_TO_THE_AFTER' => ' zu',
     'I_HAVE_READ_AND_AGREE_WITH_THE' => 'Ich stimme der ',
@@ -597,15 +597,26 @@ return [
     'CONFIRM_YOUR_EMAIL' => 'E-mail bestätigen',
     'WE_WILL_APPROVE_YOUR_REGISTRATION' => 'Wir werden deine Anmeldung genehmigen',
     'START_UPLOADING_YOUR_JOB_OFFERS' => 'Kostenlos Jobanzeige posten',
-    'GENTELMAN_RECRUITERS' => 'Liebe Recruiter,',
-    'THANK_YOU_VERY_MUCH_FOR_VISITING_OUR_SITE' => 'Danke für Ihr Interesse an Central Jobs!',
-    'SOME_ADVANTAGE_OF_OUR_PLATFORM' => 'Vorteile unserer Plattform:',
+    'GENTELMAN_RECRUITERS' => 'Liebe Recruiter:innen,',
+    'THANK_YOU_VERY_MUCH_FOR_VISITING_OUR_SITE' => 'Vielen Dank, dass Sie unsere Website besuchen! Wir helfen Ihnen, Ihre Zeit zu optimieren (und Ihr Geld zu sparen), während Sie nach dem BESTEN KANDIDAT:IN suchen!',
+    'SOME_ADVANTAGE_OF_OUR_PLATFORM' => 'Einige Vorteile unserer Plattform:',
     'COMPANY_REGISTRATION_STEP_1_HEADING' => 'KOSTENLOS:',
-    'COMPANY_REGISTRATION_STEP_1' => 'Auf der Suche nach Kandidat:innen können Unternehmen unbegrenzt und kostenlos Stellanzeigen aufgeben!',
+
+    'COMPANY_REGISTRATION_STEP_1' => 'Zur Feier des Starts von CENTRAL Jobs bieten wir Unternehmen die Möglichkeit, unbegrenzte Stellenanzeigen kostenlos zu veröffentlichen! Keine versteckten Gebühren, keine monatlichen Einschränkungen – einfach pure Rekrutierungskraft ohne Kosten.',
+
+     
+    'COMPANY_REGISTRATION_STEP_1_A' => 'Nutzen Sie diese einmalige Gelegenheit, kostenfrei mit Top-Talenten in Kontakt zu treten! ',
+
+    'COMPANY_REGISTRATION_STEP_1_B' => 'Melden Sie sich noch heute an und starten Sie eine smartere Rekrutierung!',
+
     'COMPANY_REGISTRATION_STEP_2_HEADING' => 'SCHRIFTLICHE FRAGEN:',
-    'COMPANY_REGISTRATION_STEP_2' => 'Beim Einstellen einer Stellenanzeige können Sie zusätzlich bis zu 3 Fragen hinzufügen, die die Kandidat:innen schriftlich beantworten muss.',
-    'COMPANY_REGISTRATION_STEP_3_HEADING' => 'FRAGEN PER VIDEO:',
-    'COMPANY_REGISTRATION_STEP_3' => 'Wenn Sie eine Stellenanzeige schalten, können Sie zusätzlich bis zu 3 Fragen hinzufügen, die die Kandidat:innen per Video beantworten müssen. So können Sie die Erfahrungen und Qualifikationen der Kandidaten besser erkennen!',
+
+    'COMPANY_REGISTRATION_STEP_2' => 'Wir haben diese Website mit einer benutzerfreundlichen Oberfläche gestaltet!',
+
+    'COMPANY_REGISTRATION_STEP_3_HEADING' => 'WIE FUNKTIONIERT ES? ',
+
+    'COMPANY_REGISTRATION_STEP_3' => 'Sie müssen sich lediglich registrieren und Ihre E-Mail bestätigen (Sie erhalten eine E-Mail mit einem Verifizierungslink). Wir überprüfen Ihr Profil – und das wars! Sie können sofort loslegen.',
+
     'COMPANY_REGISTRATION_STEP_4_HEADING' => 'OPTIMIEREN SIE IHRE ZEIT:',
     'COMPANY_REGISTRATION_STEP_4' => 'Die Einbeziehung von Video- und/oder schriftlichen Fragen hilft Ihnen, die/den perfekte Kandidat:in schnell zu erkennen und Ihre Zeit zu optimieren!',
     'COMPANY_REGISTRATION_STEP_5_HEADING' => 'EINFACH ZU BEDIENEN:',
@@ -650,8 +661,10 @@ return [
     'I_AGREE_TO_THE' => 'Ich stimme der',
     'WE_WANT_TO_WORK_WITH_YOU' => 'Wir möchten mit Ihnen zusammenarbeiten und Ihnen helfen, bei der Suche nach dem/der idealen Kandidat:in Zeit (und Geld) zu sparen!',
     'SOME_ADVANTAGES_OF_OUR_PLATFORM' => 'Vorteile unserer Plattform:',
-    'WE_ARE_HERE_TO_HELP_YOU' => 'Wir sind hier, um Ihnen zu helfen! Wenn Sie Fragen, Anregungen oder Probleme haben, kontaktieren Sie uns bitte!',
-    'WE_WISH_A_LOT_OF_SUCCESS' => 'Wir wünschen Ihnen viel Erfolg und danken für Ihr Vertrauen.',
+    'WE_ARE_HERE_TO_HELP_YOU' => 'Wir sind hier, um Ihnen zu helfen! Bei Fragen, Vorschlägen oder Problemen kontaktieren Sie uns gerne.',
+    
+    'WE_WISH_A_LOT_OF_SUCCESS' => 'Wir wünschen Ihnen viel Erfolg und danken Ihnen für Ihr Vertrauen!',
+
     'EDIT_PROFILE' => 'Profil bearbeiten',
     'CONSENT_WITHDRAW' => 'Zustimmung zurückziehen',
     'WHY_THIS_HAPPENS' => 'Warum passiert das?',

@@ -66,11 +66,14 @@ swal({
                                  <div class="">
                                     <p>{{ __('messages.GENTELMAN_RECRUITERS') }}</p>
                                      <p>{{ __('messages.THANK_YOU_VERY_MUCH_FOR_VISITING_OUR_SITE') }}</p>
-                                    <p>{{ __('messages.WE_WANT_TO_WORK_WITH_YOU') }}</p>
+                                    <!-- <p>{{ __('messages.WE_WANT_TO_WORK_WITH_YOU') }}</p> -->
                                     <p>{{ __('messages.SOME_ADVANTAGE_OF_OUR_PLATFORM') }}</p>
 
                                     <p><strong>1 – {{ __('messages.COMPANY_REGISTRATION_STEP_1_HEADING') }}</strong></p>
                                     <p>{{ __('messages.COMPANY_REGISTRATION_STEP_1') }}</p>
+
+                                    <p>{{ __('messages.COMPANY_REGISTRATION_STEP_1_A') }}</p>
+                                    <p><b>{{ __('messages.COMPANY_REGISTRATION_STEP_1_B') }}</b></p>
 
 
                                     <p><strong>2 – {{ __('messages.COMPANY_REGISTRATION_STEP_2_HEADING') }}</strong></p>
@@ -79,7 +82,8 @@ swal({
 
                                     <p><strong>3 – {{ __('messages.COMPANY_REGISTRATION_STEP_3_HEADING') }}</strong></p>
                                     <p>{{ __('messages.COMPANY_REGISTRATION_STEP_3') }}</p>
-                                    <p><strong>4 – {{ __('messages.COMPANY_REGISTRATION_STEP_4_HEADING') }}</strong></p>
+
+                                    <!-- <p><strong>4 – {{ __('messages.COMPANY_REGISTRATION_STEP_4_HEADING') }}</strong></p>
                                     <p>{{ __('messages.COMPANY_REGISTRATION_STEP_4') }}</p>
 
                                     
@@ -88,8 +92,8 @@ swal({
 
                                     @if (__('messages.COMPANY_REGISTRATION_STEP_6_HEADING') !='')
                                     <p><strong>6 – {{ __('messages.COMPANY_REGISTRATION_STEP_6_HEADING') }}</strong></p>
-                                    <p>{{ __('messages.COMPANY_REGISTRATION_STEP_6') }}</p>
-                                    @endif
+                                    <p>{{ __('messages.COMPANY_REGISTRATION_STEP_6') }}</p> -->
+                                    <!-- @endif -->
                                     
 
 
