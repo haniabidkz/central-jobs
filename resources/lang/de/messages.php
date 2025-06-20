@@ -566,6 +566,7 @@ return [
     'RECORD_YOUR_VIDEO' => 'Video aufnehmen',
     'YOUR_EMAIL_SUBSCRIBED_SUCCESSFULLY' => 'Ihre E-Mail erfolgreich abonniert.',
     'I_WISH_TO_RECEIVE_NEWSLETTER' => 'Ich möchte den Newsletter (Tipps zur Rekrutierung) erhalten. ',
+    'ANNUAL_SALARY' => 'Jahresgehalt',
     'I_HAVE_READ_AND_AGREE_TO_THE' => 'Ich stimme den ',
     'I_HAVE_READ_AND_AGREE_TO_THE_AFTER' => ' zu',
     'I_HAVE_READ_AND_AGREE_WITH_THE' => 'Ich stimme der ',

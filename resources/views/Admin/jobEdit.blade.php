@@ -328,7 +328,16 @@
                                             <option value="0" <?php if($setting == 0){ echo 'selected';}?>>None of them are mandatory </option>
                                         </select>
                                     </div>
-                                </div>               
+                                </div>
+                                
+                                <div class="col-12 col-sm-6 col-xl-4">
+                                    <div class="form-group required"> Annual Salary:
+                                        <div class="">
+                                            <input type="text" value="{{@$details['annual_salary']}}" class="form-control" placeholder="{{ __('messages.ANNUAL_SALARY') }} *"  name="annual_salary" required>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="col-12 col-sm-6 col-xl-4">
                                     <div class="form-group">
                                         <label for="title">Start Date</label>

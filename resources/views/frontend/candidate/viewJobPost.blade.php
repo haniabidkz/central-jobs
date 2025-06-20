@@ -52,6 +52,11 @@ if(!empty($postData['likes'])){
                                        <p><i class="fa fa-clock-o mr-2" aria-hidden="true"></i><?php $toDay = strtotime(date('Y-m-d')); if((strtotime($postData['start_date']) <= $toDay) && (strtotime($postData['end_date']) >= $toDay)){ echo  __('messages.ONGOING');}else if(strtotime($postData['end_date']) < $toDay){ echo __('messages.CLOSED');}else if(strtotime($postData['start_date']) > $toDay){ echo __('messages.PENDING_PUBLICATION');}?></p>
 
                                        <p><i class="fa fa-clock-o mr-2" aria-hidden="true"></i>{{$postData['type'] ?? '-'}}</p>
+
+
+                                       <p><i class="fa fa-clock-o mr-2" aria-hidden="true"></i>{{$postData['type'] ?? '-'}}</p>
+
+                                          <p><i class="fa fa-money mr-2" aria-hidden="true"></i>{{$postData['annual_salary'] ?? '-'}}</p>
                                        
                                     </div>
                                     {{-- <!-- <button class="btn site-btn-color">Apply Now</button>    --> --}}

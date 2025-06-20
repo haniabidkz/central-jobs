@@ -559,6 +559,7 @@ return [
     'RECORD_YOUR_VIDEO' => 'Record Your Video',
     'YOUR_EMAIL_SUBSCRIBED_SUCCESSFULLY' => 'Your email subscribed successfully.',
     'I_WISH_TO_RECEIVE_NEWSLETTER' => 'I wish to receive the newsletter (tips for recruitment).',
+    'ANNUAL_SALARY' => 'Annual Salary',
     'I_HAVE_READ_AND_AGREE_TO_THE' => 'I have read and agree to the',
     'I_HAVE_READ_AND_AGREE_TO_THE_AFTER' => '',
     'I_HAVE_READ_AND_AGREE_WITH_THE' => 'I have read and agree with the',

@@ -356,7 +356,7 @@ class Company extends Controller
      *
      */ 
     public function postJobPost(Request $request)
-    {
+    {    
         $employment = $this->companyService->postJobPost($request);
         $postID=$employment->id;
         request()->session()->flash('success-msg', __('messages.JOB_CREATED_SUCCESSFULLY') );

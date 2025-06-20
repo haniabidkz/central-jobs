@@ -243,6 +243,15 @@
                            </div>
                            
                         </div>
+
+                         <div class="col-12 col-sm-6 col-xl-4">
+                           <div class="form-group required"> Annual Salary:
+                              <div class="">
+                                 <input type="text" class="form-control" placeholder="{{ __('messages.ANNUAL_SALARY') }} *"  name="annual_salary" required>
+                              </div>
+                           </div>
+                        </div>
+
                         <div class="col-12 col-sm-6 col-xl-4">
                            <div class="form-group required"> Start Date:
                               <div class="select-dat">

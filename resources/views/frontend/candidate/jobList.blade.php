@@ -278,6 +278,9 @@
                                                 <i class="fa fa-tasks" aria-hidden="true"></i>{{$job['type']}}
                                              </li>
                                              @endif
+
+                                             <li><i class="fa fa-money mr-2" aria-hidden="true"></i> {{$job['annual_salary'] ?? '-'}} </li>
+
                                           </ul>   
                                           
                                        </div>

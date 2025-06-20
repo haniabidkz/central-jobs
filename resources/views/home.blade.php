@@ -201,7 +201,7 @@ if (((Session::get('regSuccessMsg') != '') && (Session::get('regSuccessMsg') != 
                                                                                     echo 'selected';
                                                                                  } ?>>{{$city->name}}</option>
                                        <?php  }
-                                       } ?>
+                                       } ?>`
                                     </select>
 
                                     {{-- <input type="text" class="form-control" placeholder="{{ __('messages.CITY') }}" name="city_comp" id="city_comp" value="{{@$search['city_comp']}}"> --}}

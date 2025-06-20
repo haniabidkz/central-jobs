@@ -606,6 +606,9 @@ class CompanyService {
         $postData['user_id'] = $userId;
         // $postData['city'] = $data['city'] ?? '-';
         $postData['description'] = $data['description'];
+
+        $postData['annual_salary'] = $data['annual_salary'];
+
         $postData['start_date'] = $data['start_date'];
         $postData['end_date'] = $data['end_date'];
         $postData['applied_by'] = 2;

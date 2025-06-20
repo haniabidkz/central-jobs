@@ -22,7 +22,7 @@ class JobPost extends Model
      */
     protected $table = 'posts';
 
-    protected $fillable = ['user_id', 'job_id','title', 'slug','country_id', 'state_id', 'city','type', 'position_for', 'employment_type', 'language', 'description', 'start_date', 'end_date', 'applied_by', 'category_id', 'website_link', 'status', 'job_status','highlighted', 'created_at', 'updated_at', 'deleted_at'];
+    protected $fillable = ['user_id', 'job_id','title', 'slug','country_id', 'state_id', 'city','type', 'position_for', 'employment_type', 'language', 'description', 'start_date', 'end_date', 'applied_by', 'category_id', 'website_link', 'status', 'job_status','highlighted', 'created_at', 'updated_at', 'deleted_at','annual_salary'];
 
      /**
      * Get the  record associated with the country.
