@@ -54,7 +54,7 @@ if(!empty($postData['likes'])){
                                        <p><i class="fa fa-clock-o mr-2" aria-hidden="true"></i>{{$postData['type'] ?? '-'}}</p>
 
 
-                                       <p><i class="fa fa-clock-o mr-2" aria-hidden="true"></i>{{$postData['type'] ?? '-'}}</p>
+                                       <!-- <p><i class="fa fa-clock-o mr-2" aria-hidden="true"></i>{{$postData['type'] ?? '-'}}</p> -->
 
                                           <p><i class="fa fa-money mr-2" aria-hidden="true"></i>{{$postData['annual_salary'] ?? '-'}}</p>
                                        
