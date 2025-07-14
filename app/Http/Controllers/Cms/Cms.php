@@ -36,7 +36,6 @@ class Cms extends Controller
         if ($request->method() == 'POST') {
             $data = $request->all();
             try {
-                // dd($data);
                 $validator = Validator::make(
                     $data,
                     [
@@ -48,19 +47,27 @@ class Cms extends Controller
                         'commercial_register' => 'sometimes|required',
                     ]
                 );
-                // pre($input);
                 if ($validator->fails()) {
-                    dd($validator);
-                    return redirect()->back()->withErrors($validator);
+                    return redirect()->back()->withErrors($validator)->withInput();
                 }
-                $captcha = $data['g-recaptcha-response'];
-                $secret = config('app.recaptcha_SecretKey');
-                $response = json_decode(file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=". $secret."&response=" . $captcha . "&remoteip=" . $_SERVER['REMOTE_ADDR']), true);
-                if ($response['success'] == false) {
-                    $request->session()->flash('error-msg', 'You are spammer ! Get the @$%K out');
-                    return redirect()->back();
+                // Google reCAPTCHA validation
+                $recaptcha = $data['g-recaptcha-response'] ?? '';
+                $response = null;
+                if (!empty($recaptcha)) {
+                    $client = new \GuzzleHttp\Client();
+                    $res = $client->post('https://www.google.com/recaptcha/api/siteverify', [
+                        'form_params' => [
+                            'secret' => env('RECAPTCHA_SECRET_KEY'),
+                            'response' => $recaptcha,
+                            'remoteip' => $request->ip(),
+                        ]
+                    ]);
+                    $response = json_decode($res->getBody(), true);
                 }
-
+                if (empty($response) || empty($response['success']) || $response['success'] !== true) {
+                    $request->session()->flash('error-msg', 'reCAPTCHA verification failed. Please try again.');
+                    return redirect()->back()->withInput();
+                }
                 $checkRestriction = $this->cmsServices->checkRestriction();
                 if ($checkRestriction == 'true') {
                     $request->session()->flash('error-msg', 'You are not allow to send message');

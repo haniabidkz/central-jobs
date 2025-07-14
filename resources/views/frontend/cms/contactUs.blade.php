@@ -57,11 +57,11 @@
                                     <div class="form-group">
                                         <textarea class="form-control" name="description" placeholder="{{__('messages.DESCRIPTION')}}"></textarea>
                                     </div>
-                                    <div class="g-recaptcha"
-					     data-sitekey="{{config('app.recaptcha_SiteKey')}}"
-					     data-callback="submitForm"
-					     data-size="invisible">
-					</div>
+                                    <!-- Manual CAPTCHA -->
+                                    <div class="form-group required">
+                                        <div class="g-recaptcha" data-sitekey="6LfjpoIrAAAAAHU9raDrgmzo5Vv7KcO0PQtIXFrH"></div>
+                                        <label id="recaptcha-error" class="error" style="display:none;color:#e74c3c;margin-top:5px;"></label>
+                                    </div>
                                     <div class="social-btnlist">
                                         <button   class="w-100 btn site-btn-color contact_us_btn" name="submit1" type="submit">{{__('messages.SUBMIT_REQUEST')}} <i class="fa fa-caret-right ml-2" aria-hidden="true"></i></button>
                                     </div> 
@@ -69,7 +69,7 @@
                                         <label class="check-style">{{__('messages.I_AGREE_TO_THE')}} <a href="{{url('privacy-policy')}}">{{__('messages.PRIVACY_POLICY')}}</a>{{__('messages.I_HAVE_READ_AND_AGREE_WITH_THE_AFTER')}}
                                             <input type="checkbox" name="privacy_policy" id="privacy_policy">
                                             <span class="checkmark"></span>
-	                                    </label>
+                                        </label>
                                     </div>
 
                                 </div>
@@ -115,6 +115,10 @@ $(document).ready(function(){
 
     //return value.indexOf(" ",1) < 0 && value != ""; 
     }, $this.lanFilter($this.lanFilter(allMsgText.NO_SPACE_PLEASE_AND_DONT_LEAVE_IT_EMPTY)));
+    $.validator.addMethod("recaptchaRequired", function(value, element, param) {
+        return grecaptcha.getResponse().length > 0;
+    }, "Please verify that you are not a robot.");
+
     $("#form_contact_us").validate({
         rules: {
             name: {
@@ -135,7 +139,9 @@ $(document).ready(function(){
             privacy_policy:{
                 required: true
             },
-            
+            'g-recaptcha-response': {
+                recaptchaRequired: true
+            }
         },
 
         messages: {
@@ -143,20 +149,41 @@ $(document).ready(function(){
             email: $this.lanFilter(allMsgText.PLEASE_PROVIDE_EMAIL),
             subject: $this.lanFilter(allMsgText.PLEASE_SELECT_SUBJECT),
             description: $this.lanFilter(allMsgText.PLEASE_PROVIDE_DESCRIPTION),
-            privacy_policy: $this.lanFilter(allMsgText.PLEASE_AGREE_TO_PRIVACY_POLICY)
+            privacy_policy: $this.lanFilter(allMsgText.PLEASE_AGREE_TO_PRIVACY_POLICY),
+            'g-recaptcha-response': "Please verify that you are not a robot."
             
         },
-        submitHandler: function (event) {
-
-              if (grecaptcha.getResponse()) {
-                event.submit();
-            }else{
-                grecaptcha.reset();
-                grecaptcha.execute();
+        errorPlacement: function(error, element) {
+            if (element.attr("name") === "g-recaptcha-response") {
+                $("#recaptcha-error").html(error.text()).show();
+            } else {
+                error.insertAfter(element);
             }
-        } 
+        },
+        success: function(label, element) {
+            if ($(element).attr("name") === "g-recaptcha-response") {
+                $("#recaptcha-error").hide();
+            }
+        },
+        submitHandler: function(form) {
+            if (grecaptcha.getResponse().length === 0) {
+                $("#recaptcha-error").html("Please verify that you are not a robot.").show();
+                return false;
+            }
+            $("#recaptcha-error").hide();
+            form.submit();
+        }
     });
    
+    // Prevent manual submit if reCAPTCHA not checked
+    $('#form_contact_us').on('submit', function(e) {
+        if (grecaptcha.getResponse().length === 0) {
+            e.preventDefault();
+            $("#recaptcha-error").html("Please verify that you are not a robot.").show();
+        } else {
+            $("#recaptcha-error").hide();
+        }
+    });
 });
 var validationCheck = false;
 /* $("#form_contact_us").submit(function(event) {	
@@ -179,8 +206,8 @@ var validationCheck = false;
  function submitForm() {
  event.preventDefault();
         console.log('captcha completed.');        
-	    $("#form_contact_us").submit();
-	    return true;
+        $("#form_contact_us").submit();
+        return true;
     }
 
 
