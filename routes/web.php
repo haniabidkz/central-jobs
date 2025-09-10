@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\BlogController;
+use App\Http\Controllers\WebBlogController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Artisan;
@@ -57,6 +59,7 @@ Route::group(['middleware' => ['checkCountry']], function () {
 
 
     //Static CMS page
+
     Route::get('contact-us', 'Cms\Cms@contactUs');
     Route::post('contact-us', 'Cms\Cms@contactUs');
     Route::get('about-us', 'Cms\Cms@aboutUs');
@@ -70,6 +73,9 @@ Route::group(['middleware' => ['checkCountry']], function () {
     Route::get('/training-category-list', 'TrainingController@index');
     Route::get('/training-details/{id}', 'TrainingController@details');
     Route::get('/training-details/{catid}/{videoid}', 'TrainingController@details');
+
+
+    Route::get('blogs', [WebBlogController::class, 'index']);
 
     // Password Reset Routes...
     Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
@@ -161,6 +167,13 @@ Route::group(['middleware' => ['checkCountry']], function () {
         Route::post('/edit-page-content-text-post', 'CmsController@editPageContentTextPost');
         Route::post('/banner-img-delete', 'CmsController@bannerImageDelete');
 
+        //Blogs
+        Route::get('/blogs', [BlogController::class, 'index']);
+        Route::get('/blogs/add', [BlogController::class, 'add']);
+        Route::post('/blogs/store', [BlogController::class, 'store']);
+        Route::get('/blogs/edit/{id}', [BlogController::class, 'edit']);
+        Route::post('/blogs/update/{id}', [BlogController::class, 'update']);
+        Route::delete('/blogs/delete/{id}', [BlogController::class, 'destroy']);
 
         //Job Management
 
@@ -168,8 +181,6 @@ Route::group(['middleware' => ['checkCountry']], function () {
         Route::get('/jobs/{id}/detail', 'JobController@jobDetail')->name('detail_job');
         Route::post('/jobs/{id}/accept', 'JobController@acceptJob')->name('accept_job');
         Route::delete('/jobs/{id}/reject', 'JobController@rejectJob')->name('reject_job');
-      
-
 
 
 
