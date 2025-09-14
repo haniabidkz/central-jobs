@@ -16,7 +16,7 @@ return [
     'PRIVACY_POLICY' => 'Privacy Policy',
     'TERMS_OF_USE'   => 'Terms of Use',
     'CONTACT_US'     => 'Contact Us',
-    'TIPS'           => 'Tips',
+    'TIPS'           => 'Career Tips',
     'LOGING'        => 'Login',
     'JOIN_US'       => 'Join Us',
     'EMAIL'         => 'Email',

@@ -20,7 +20,7 @@ return [
 
     'TERMS_OF_USE'      => 'AGB',
     'CONTACT_US'        => 'kontakt',
-    'TIPS'              => 'Hinweise',
+    'TIPS'              => 'Karrieretipps',
     'LOGING'            => 'Anmeldung',
     'JOIN_US'           => 'Teilnehmen',
     'EMAIL'             => 'Email',
