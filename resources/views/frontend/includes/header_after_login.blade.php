@@ -152,6 +152,9 @@
                <li class="nav-item all-nav @if($action == 'tips')active @endif">
                   <a class="nav-link" href="{{url('tips')}}">{{ __('messages.TIPS') }}</a>
                </li>
+                  <li class="nav-item all-nav">
+                           <a class="nav-link" href="{{url('blogs')}}">Blogs</a>
+                        </li>
                <li class="nav-item all-nav">
                   @if((auth()->user()) && (auth()->user()->user_type == 3))
                      {{-- <a class="nav-link"  href="{{url('company/payment-details')}}">Highlight your Job Posts!</a> --}}
@@ -240,6 +243,9 @@
                            <li class="nav-item all-nav <?php if($action == 'tips'){ echo 'active';}?>">
                               <a class="nav-link" href="{{url('tips')}}">{{ __('messages.TIPS') }}</a>
                            </li>
+                             <li class="nav-item all-nav">
+                           <a class="nav-link" href="{{url('blogs')}}">Blogs</a>
+                        </li>
                            <li class="nav-item all-nav">
                               @if((auth()->user()) && (auth()->user()->user_type == 3))
                                 {{-- <a class="nav-link"  href="{{url('company/payment-details')}}">Highlight your Job Posts!</a> --}}

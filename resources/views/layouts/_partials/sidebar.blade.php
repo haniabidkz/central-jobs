@@ -54,7 +54,12 @@
                         <p>Job Management</p>
                     </a>
                 </li>
-               
+                <li class="nav-item">
+                    <a href="{{url('/admin/blogs')}}" class="nav-link {{isset($activeModule) && $activeModule=='blogs' ? 'active': ''}}">
+                        <i class=" nav-icon fa fa-briefcase"></i>
+                        <p>Blogs</p>
+                    </a>
+                </li>
                 <li class="nav-item has-treeview {{isset($activeModule) && in_array($activeModule,['category','video']) ? 'menu-open': ''}}">
                     <a href="#" class="nav-link {{isset($activeModule) && in_array($activeModule,['category','video']) ? 'active': ''}}">
                         <i class="nav-icon fa fa-graduation-cap"></i>

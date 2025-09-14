@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\BlogController;
+use App\Http\Controllers\WebBlogController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Artisan;
@@ -71,6 +73,10 @@ Route::group(['middleware' => ['checkCountry']], function () {
     Route::get('/training-details/{id}', 'TrainingController@details');
     Route::get('/training-details/{catid}/{videoid}', 'TrainingController@details');
 
+    Route::get('blogs', [WebBlogController::class, 'index']);
+    // routes/web.php
+    Route::get('blogs/{slug}', [WebBlogController::class, 'detail'])->name('blogs.detail');
+
     // Password Reset Routes...
     Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
     Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
@@ -129,6 +135,15 @@ Route::group(['middleware' => ['checkCountry']], function () {
         Route::post('/company-report-details', 'CompanyController@companyReportList');
         Route::get('/company-job-list/{id}', 'CompanyController@jobList');
         Route::get('/company-report-list/{id}', 'CompanyController@companyReportAllList');
+
+
+        //Blogs
+        Route::get('/blogs', [BlogController::class, 'index']);
+        Route::get('/blogs/add', [BlogController::class, 'add']);
+        Route::post('/blogs/store', [BlogController::class, 'store']);
+        Route::get('/blogs/edit/{id}', [BlogController::class, 'edit']);
+        Route::post('/blogs/update/{id}', [BlogController::class, 'update']);
+        Route::delete('/blogs/delete/{id}', [BlogController::class, 'destroy']);
         //CMS Page
         // Route::get('/cms-page', 'AdminController@cmsPages');
         // Route::get('/cms-edit/{id}', 'AdminController@cmsEdit');
@@ -168,7 +183,7 @@ Route::group(['middleware' => ['checkCountry']], function () {
         Route::get('/jobs/{id}/detail', 'JobController@jobDetail')->name('detail_job');
         Route::post('/jobs/{id}/accept', 'JobController@acceptJob')->name('accept_job');
         Route::delete('/jobs/{id}/reject', 'JobController@rejectJob')->name('reject_job');
-      
+
 
 
 
