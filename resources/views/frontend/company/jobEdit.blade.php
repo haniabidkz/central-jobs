@@ -267,6 +267,31 @@
                                              </div>
                                           </div>
                                        </div><br>
+                                       <div class="form-group required"> 
+   Annual Salary:
+   <div class="">
+      <select name="annual_salary" class="form-control" required>
+         <option value="">{{ __('messages.ANNUAL_SALARY') }} *</option>
+
+         <option value="Up To €35000" {{ @$details['annual_salary'] == 'Up To €35000' ? 'selected' : '' }}>
+            {{ __('messages.UP_TO_€35.000') }}
+         </option>
+         <option value="35001 - €50000" {{ @$details['annual_salary'] == '35001 - €50000' ? 'selected' : '' }}>
+            {{ __('messages.€35.001_€50.000') }}
+         </option>
+         <option value="50001 - €65000" {{ @$details['annual_salary'] == '50001 - €65000' ? 'selected' : '' }}>
+            {{ __('messages.€50.001_€65.000') }}
+         </option>
+         <option value="65001 - €85000" {{ @$details['annual_salary'] == '65001 - €85000' ? 'selected' : '' }}>
+            {{ __('messages.€65.001_€85.000') }}
+         </option>
+         <option value="Above €85000" {{ @$details['annual_salary'] == 'Above €85000' ? 'selected' : '' }}>
+            {{ __('messages.ABOVE_€85.000') }}
+         </option>
+      </select>
+   </div>
+</div>
+
                                        <div class="col-12 col-sm-6 col-xl-4">
                                           <div class="form-group required">
                                              <div class="select-dat">Start Date: 
