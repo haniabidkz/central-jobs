@@ -153,7 +153,7 @@
                   <a class="nav-link" href="{{url('tips')}}">{{ __('messages.TIPS') }}</a>
                </li>
                   <li class="nav-item all-nav">
-                           <a class="nav-link" href="{{url('blogs')}}">Blogs</a>
+                           <a class="nav-link" href="{{url('blogs')}}">{{ __('messages.BLOGS') }}</a>
                         </li>
                <li class="nav-item all-nav">
                   @if((auth()->user()) && (auth()->user()->user_type == 3))
@@ -244,7 +244,7 @@
                               <a class="nav-link" href="{{url('tips')}}">{{ __('messages.TIPS') }}</a>
                            </li>
                              <li class="nav-item all-nav">
-                           <a class="nav-link" href="{{url('blogs')}}">Blogs</a>
+                           <a class="nav-link" href="{{url('blogs')}}">{{ __('messages.BLOGS') }}</a>
                         </li>
                            <li class="nav-item all-nav">
                               @if((auth()->user()) && (auth()->user()->user_type == 3))

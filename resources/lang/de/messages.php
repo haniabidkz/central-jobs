@@ -590,6 +590,7 @@ return [
     'SEPARATE_EACH_HOBBY_BY_ENTER_ANY_KEY' => 'jedes Hobby durch Komma trennen',
     'TO_BE_PUBLISHED_ON' => 'Zur Veröffentlichung am...',
     'LAST_DAY_OF_JOB_POST' => 'Letzter Tag der Stellenausschreibung',
+    'BLOGS' => 'Blog & Karrieretipps',
     'EMPLOYER_SIGNUP' => 'Arbeitgeber-Anmeldung',
     'YOU_CAN_TRY_AS_MANY_TIME_AS_YOU_WANT' => 'Sie können es so oft versuchen wie Sie wollen!',
     'WHEN_IT_IS_READY_JUST_CLICK_IN_UPLOAD' => 'Wenn es fertig ist, einfach hochladen!',

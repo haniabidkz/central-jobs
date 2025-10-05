@@ -583,6 +583,7 @@ return [
     'SEPARATE_EACH_HOBBY_BY_ENTER_ANY_KEY' => 'separate each hobby by comma',
     'TO_BE_PUBLISHED_ON' => 'To be published on...',
     'LAST_DAY_OF_JOB_POST' => 'Last day of job post',
+    'BLOGS' => 'Blog & Career tips',
     'EMPLOYER_SIGNUP' => 'Employer (FREE)',
     'YOU_CAN_TRY_AS_MANY_TIME_AS_YOU_WANT' => 'You can try as many time as you want!',
     'WHEN_IT_IS_READY_JUST_CLICK_IN_UPLOAD' => 'When it\'s ready, just click in upload!',
