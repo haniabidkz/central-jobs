@@ -1,1 +1,0 @@
-<?php /**PATH /var/www/html/centralJobs/resources/views/email/mail.blade.php ENDPATH**/ ?>
