@@ -13,14 +13,14 @@
                 <h1>Stripe Products List</h1>
             </div>
             <div class="col-sm-6">
-                <div class ="breadcrumb float-sm-right">
+                <div class="breadcrumb float-sm-right">
                     <a href="{{url('/admin/product-add')}}" class="btn btn-default">Create Product</a>
                 </div>
-                
+
             </div>
             {{-- <a href="{{url('adimn/product-add')}}" class="btn btn-default">Create Product</a> --}}
         </div>
-        
+
     </div><!-- /.container-fluid -->
 </section>
 <!-- Main content -->
@@ -44,47 +44,55 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                     <?php $lastParam = app('request')->input('page');
-                                    if($lastParam == '' || $lastParam == 1){
-                                        $i = 0; 
-                                    }
-                                    else{ 
-                                        $i= (($lastParam-1) * env('ADMIN_PAGINATION_LIMIT'));
+                                    <?php $lastParam = app('request')->input('page');
+                                    if ($lastParam == '' || $lastParam == 1) {
+                                        $i = 0;
+                                    } else {
+                                        $i = (($lastParam - 1) * env('ADMIN_PAGINATION_LIMIT'));
                                     } ?>
                                     @foreach($plans as $key => $plan)
-                                    
+
                                     <tr>
                                         <td>{{ ++$i }}</td>
-                                        <td>{{ $plan['name'] }}</td>
-                                        <td>€ {{ $plan['amount']/100 }}</td>
-                                       
                                         <td>
-                                        <?php if($plan['active']==true){?> <button type="button" class="btn tbl-btn-block-active btn-success btn-sm disable-cursor">Active</button><?php }else{ ?> <button type="button" class="btn tbl-btn-block-active btn-danger btn-sm disable-cursor">Inactive</button><?php } ?>
+                                            {{ data_get($plan, 'nickname') ?: data_get($plan, 'product.name') ?: data_get($plan, 'product.description') ?: data_get($plan, 'name') ?: (data_get($plan, 'id') ?? '') }}
+                                        </td>
+                                        @php
+                                        $rawAmount = data_get($plan, 'amount') ?: data_get($plan, 'unit_amount') ?: 0;
+                                        @endphp
+                                        <td>€ {{ $rawAmount/100 }}</td>
+
+                                        <td>
+                                            @if(data_get($plan, 'active'))
+                                            <button type="button" class="btn tbl-btn-block-active btn-success btn-sm disable-cursor">Active</button>
+                                            @else
+                                            <button type="button" class="btn tbl-btn-block-active btn-danger btn-sm disable-cursor">Inactive</button>
+                                            @endif
                                         </td>
                                         <td>
-                                        <div class="dropdown">
-                                            <button class="btn btn-sm btn-primary dropdown-toggle" type="button"  data-toggle="dropdown"  id="aaaaa">Actions</button>
+                                            <div class="dropdown">
+                                                <button class="btn btn-sm btn-primary dropdown-toggle" type="button" data-toggle="dropdown" id="aaaaa">Actions</button>
                                                 <ul class="dropdown-menu" id="bag" style="list-style-type: none;">
-                                                    <li><a class="dropdown-item" href="{{url('admin/product-list-edit/'.encrypt($plan['id']))}}">Edit</a></li>
-                                                    @if ($plan['active'])
-                                                        <li><a class="dropdown-item" href="{{url('admin/product-list-edit-active/'.encrypt($plan['id'])."/false")}}">Set as Inactive</a></li>
+                                                    <li><a class="dropdown-item" href="{{ url('admin/product-list-edit/'.encrypt(data_get($plan,'id'))) }}">Edit</a></li>
+                                                    @if (data_get($plan,'active'))
+                                                    <li><a class="dropdown-item" href="{{ url('admin/product-list-edit-active/'.encrypt(data_get($plan,'id')).'/false') }}">Set as Inactive</a></li>
                                                     @else
-                                                        <li><a class="dropdown-item" href="{{url('admin/product-list-edit-active/'.encrypt($plan['id'])."/true")}}">Set as Active</a></li>
+                                                    <li><a class="dropdown-item" href="{{ url('admin/product-list-edit-active/'.encrypt(data_get($plan,'id')).'/true') }}">Set as Active</a></li>
                                                     @endif
                                                 </ul>
-                                        </div>
-                                        
+                                            </div>
+
                                         </td>
                                     </tr>
                                     @endforeach
-                                </tbody>    
+                                </tbody>
                             </table>
-                        </div>    
+                        </div>
                     </div>
                     <!-- /.card-body -->
 
                     <div class="card-footer clearfix">
-                    {{-- {{ $plans->appends(request()->query())->links() }} --}}
+                        {{-- {{ $plans->appends(request()->query())->links() }} --}}
                     </div>
                     @else
                     <div class="card-body">

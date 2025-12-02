@@ -42,48 +42,56 @@
                                 </thead>
                                 <tbody>
                                     @foreach($candidates as $key => $candidate)
-                                    
+
                                     <tr>
                                         <td>{{$loop->iteration}}</td>
-                                        <td>{{ base64_decode($candidate->user->first_name) }} {{ base64_decode($candidate->user->last_name) }}</td>
-                                        <td>{{ base64_decode($candidate->user->email) }}</td>
+                                        <td>
+                                            @php
+                                            $ufn = data_get($candidate, 'user.first_name');
+                                            $uln = data_get($candidate, 'user.last_name');
+                                            @endphp
+                                            {{ $ufn ? base64_decode($ufn) : '' }} {{ $uln ? base64_decode($uln) : '' }}
+                                        </td>
+                                        <td>{{ ($uemail = data_get($candidate, 'user.email')) ? base64_decode($uemail) : '' }}</td>
                                         <td>{{ $candidate->subscription_id }}</td>
-                                        <td>{{ $candidate->plan['name'] }}</td>
-                                        <td>€ {{ number_format(($candidate->plan['amount']/100),'2','.','') }}</td>
+                                        <td>{{ data_get($candidate, 'plan.name') ?? data_get($candidate, 'plan.product.description') ?? '' }}</td>
+                                        @php $planAmount = data_get($candidate, 'plan.amount') ?? data_get($candidate, 'plan.unit_amount') ?? 0; @endphp
+                                        <td>€ {{ number_format(($planAmount/100), 2, '.', '') }}</td>
                                         <td>{{ $candidate->customer_id }}</td>
                                         <td>{{ $candidate->card_id }}</td>
-                                        <td>{{ date('d-m-Y : h:i:s',$candidate->plan['created']) }}</td>
+                                        @php $created = data_get($candidate, 'plan.created') ?? data_get($candidate, 'plan.created_at') ?? null; @endphp
+                                        <td>{{ $created ? date('d-m-Y : h:i:s', $created) : '' }}</td>
                                         {{-- <td>
                                         <div class="dropdown">
                                             <button class="btn btn-sm btn-primary dropdown-toggle" type="button"  data-toggle="dropdown"  id="aaaaa">Actions</button>
                                                 <ul class="dropdown-menu" id="bag" style="list-style-type: none;">
                                                     <li><a class="dropdown-item" href="{{url('admin/payment-cms-edit/'.encrypt($payment['id']))}}">Edit</a></li>
-                                                </ul>
-                                        </div>
-                                        
-                                        </td> --}}
-                                    </tr>
-                                    @endforeach
-                                </tbody>    
-                            </table>
-                        </div>    
-                    </div>
-                    <!-- /.card-body -->
-
-                    <div class="card-footer clearfix">
-                    {{ $candidates->links() }}
-                    </div>
-                    @else
-                    <div class="card-body">
-                        <div class="alert alert-dark">
-                            Nothing Found
+                                        </ul>
                         </div>
+
+                        </td> --}}
+                        </tr>
+                        @endforeach
+                        </tbody>
+                        </table>
                     </div>
-                    @endif
                 </div>
-                <!-- /.card -->
+                <!-- /.card-body -->
+
+                <div class="card-footer clearfix">
+                    {{ $candidates->links() }}
+                </div>
+                @else
+                <div class="card-body">
+                    <div class="alert alert-dark">
+                        Nothing Found
+                    </div>
+                </div>
+                @endif
             </div>
-        </div><!-- /.row -->
+            <!-- /.card -->
+        </div>
+    </div><!-- /.row -->
     </div><!-- /.container-fluid -->
 </section>
 <!-- /.content -->

@@ -25,7 +25,7 @@ class ForgotPasswordController extends Controller
 
     use SendsPasswordResetEmails;
     protected $adminService;
-    
+
     /**
      * @param AdminService $adminService reference to adminService
      * 
@@ -43,18 +43,24 @@ class ForgotPasswordController extends Controller
         $request->merge([
             'email' => base64_encode($request->email),
         ]);
+
         $user = User::where('email', $request->email)->first();
+    
+        if (is_null($user)) {
+            return back()->with('error_status', __('messages.FORGOT_PASSWORD_ERROR_MSG'));
+        }
+
         $token = $this->broker()->createToken($user);
         DB::table('password_resets')->where(['email' => $request->email])->delete();
         DB::table('password_resets')->insert(['email' => $request->email, 'token' => $token]);
 
-         //$token = $this->broker()->sendResetLink($request->all());        
-         $result = $this->adminService->verifyEmailUser($request->all(),$token);
-         if($result == 'success'){
+        //$token = $this->broker()->sendResetLink($request->all());        
+        $result = $this->adminService->verifyEmailUser($request->all(), $token);
+        if ($result == 'success') {
             return back()->with('status', __('messages.FORGOT_PASSWORD_SUCCESS_MSG'));
-         }else{
+        } else {
             return back()->with('error_status', __('messages.FORGOT_PASSWORD_ERROR_MSG'));
-         }
+        }
 
         // We will send the password reset link to this user. Once we have attempted
         // to send the link, we will examine the response then see the message we
@@ -75,6 +81,4 @@ class ForgotPasswordController extends Controller
         ]);
         return $request->only('email');
     }
-
-
 }
