@@ -423,14 +423,18 @@
 
                                        <?php if (Auth::user()->user_type == 2) { ?>
                                           <h5 class="post-name">{{Auth::user()->first_name}}</h5>
-                                          <p class="post-location"><?php echo array_key_exists('currentCompany', Auth::user()) ? Auth::user()->currentCompany['title'] : '';
-                                                                     if (array_key_exists('currentCompany', Auth::user())) {
-                                                                        echo ' at ' . Auth::user()->currentCompany['company_name'];
+                                          <p class="post-location"><?php $authCurrentCompany = Auth::user()->currentCompany;
+                                                                     if (!empty($authCurrentCompany)) {
+                                                                        echo $authCurrentCompany->title;
+                                                                        if (!empty($authCurrentCompany->company_name)) {
+                                                                           echo ' at ' . $authCurrentCompany->company_name;
+                                                                        }
                                                                      } ?></p>
                                        <?php } else if (Auth::user()->user_type == 3) { ?>
 
                                           <h5 class="post-name">{{Auth::user()->company_name}}</h5>
-                                          <p class="post-location"><?php echo array_key_exists('profile', Auth::user()) ? Auth::user()->profile['business_name'] : ''; ?></p>
+                                          <p class="post-location"><?php $authProfile = Auth::user()->profile;
+                                                                     echo !empty($authProfile) ? $authProfile->business_name : ''; ?></p>
                                        <?php } ?>
                                     </div>
                                  <?php } ?>

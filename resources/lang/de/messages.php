@@ -745,4 +745,8 @@ return [
     'VIDEO_QUESTION_SEC_4' => 'Unser Tipp:',
     'VIDEO_QUESTION_SEC_4_1' => 'Nehmen Sie das Video an einem ruhigen Platz ohne Hintergrundgeräusche auf Kleiden Sie sich, als hätten Sie ein Vorstellungsgespräch Sprechen Sie deutlich',
 
+    'JOB_POST_SUCCESS_TITLE' => 'Herzlichen Glückwunsch!',
+    'JOB_POST_SUCCESS_MESSAGE' => 'Ihre Anzeige wurde :successfully übermittelt und wird innerhalb von 24 Stunden nach Freigabe durch den Administrator veröffentlicht.',
+    'JOB_POST_SUCCESS_SUCCESSFULLY' => 'erfolgreich',
+    'JOB_POST_SUCCESS_EMAIL_INFO' => 'Sie erhalten eine E-Mail, sobald sie online ist.',
 ];

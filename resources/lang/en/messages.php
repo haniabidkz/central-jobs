@@ -732,4 +732,8 @@ return [
     'VIDEO_QUESTION_SEC_4' => 'Our suggestion:',
     'VIDEO_QUESTION_SEC_4_1' => 'Record it in a calm place with no noise around you Dress like if you were in an interview Speak clearly',
 
+    'JOB_POST_SUCCESS_TITLE' => 'Congratulations!',
+    'JOB_POST_SUCCESS_MESSAGE' => 'Your post has been submitted :successfully and will be published within 24 hours after admin approval.',
+    'JOB_POST_SUCCESS_SUCCESSFULLY' => 'successfully',
+    "JOB_POST_SUCCESS_EMAIL_INFO" => "You'll receive an email when it's live.",
 ];

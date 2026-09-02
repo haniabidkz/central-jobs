@@ -654,5 +654,9 @@ return [
     'SOMETHING_WENT_WRONG' => 'Un problème est survenu!',
     'INCORRECT_DATA' => 'Données incorrectes',
 
+    'JOB_POST_SUCCESS_TITLE' => 'Félicitations!',
+    "JOB_POST_SUCCESS_MESSAGE" => "Votre annonce a été soumise :successfully et sera publiée dans les 24 heures après validation par l’administrateur.",
+    'JOB_POST_SUCCESS_SUCCESSFULLY' => 'avec succès',
+    "JOB_POST_SUCCESS_EMAIL_INFO" => "Vous recevrez un e-mail dès qu’elle sera en ligne.",
 ];
 ?>

@@ -359,9 +359,7 @@ class Company extends Controller
     {    
         $employment = $this->companyService->postJobPost($request);
         $postID=$employment->id;
-        request()->session()->flash('success-msg', __('messages.JOB_CREATED_SUCCESSFULLY') );
-        $plans = $this->paymentService->getPaymentValue();
-        return view('frontend.company.jobAdvertisement',compact('plans','postID'));
+        return view('frontend.company.jobPostSuccess',compact('postID'));
        // return redirect('/company/my-jobs');
     }
 
