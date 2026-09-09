@@ -749,4 +749,6 @@ return [
     'JOB_POST_SUCCESS_MESSAGE' => 'Ihre Anzeige wurde :successfully übermittelt und wird innerhalb von 24 Stunden nach Freigabe durch den Administrator veröffentlicht.',
     'JOB_POST_SUCCESS_SUCCESSFULLY' => 'erfolgreich',
     'JOB_POST_SUCCESS_EMAIL_INFO' => 'Sie erhalten eine E-Mail, sobald sie online ist.',
+    'REPORT_THIS_POST' => 'Diesen Beitrag melden',
+    'PLEASE_SELECT_TYPE' => 'Bitte Typ auswählen',
 ];

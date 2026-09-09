@@ -127,11 +127,9 @@
                                 <!--  <th>{{ __('messages.STATE') }}</th> -->
                                  <th>{{ __('messages.CITY') }}</th>
                                 <!--  <th>{{ __('messages.POSITION') }}</th> -->
-                                 <th>{{ __('messages.TYPE') }}</th>
                                  <th>{{ __('messages.START') }}</th>
                                  <th>{{ __('messages.END') }}</th>
                                  <th>{{ __('messages.STATUS') }}</th>
-                                 <th>{{ __('messages.TOTAL_APPLICANT') }}</th>
                                  <th>{{ __('messages.ACTION') }}</th>
                            </tr>
                         </thead>
@@ -170,22 +168,8 @@
                                     }
                                     ?>
                                  </td> -->
-                                 <td>
-                                 <?php 
-                                    if($job['cmsBasicInfo']){ 
-                                       foreach($job['cmsBasicInfo'] as $key=>$val){
-                                             if($val['type'] == 'employment_type'){
-                                                echo $val['masterInfo']['name'];
-                                             }
-                                       }
-                                    }
-                                    ?>
-                                 </td>
                                  <td>{{date('Y-m-d',strtotime($job['start_date']))}}</td>
-                                 <td>{{date('Y-m-d',strtotime($job['end_date']))}}
-
-                                    {{$job->job_status}}
-                                 </td>
+                                 <td>{{date('Y-m-d',strtotime($job['end_date']))}}</td>
                                  <td>
                                  <?php $status=''; $status_color=''; $toDay = strtotime(date('Y-m-d')); 
 
@@ -208,9 +192,6 @@
                                ?>
                                  <button type="button" class="btn {{$status_color}} btn-lg disable-cursor">{{$status}}</button>
                                  </td>
-                                 <td style="text-align:center;">
-                                 <?php  $result = Helper::getAppliedCandidateCount($job['id']); echo $result;?>
-                                 </td>
                                  <td>
                                  
                                  <div class="dropdown">
@@ -218,9 +199,6 @@
                                        <ul class="dropdown-menu" id="bag" style="list-style-type: none;">
                                           
                                              <li><a class="dropdown-item" href="{{url('company/view-job-post/'.encrypt($job['id']))}}">{{ __('messages.VIEW_POST') }}</a></li>
-                                             <?php if($result == 0){?>
-                                             <li><a class="dropdown-item" href="{{url('company/edit-job/'.encrypt($job['id']))}}">{{ __('messages.EDIT') }}</a></li>
-                                             <?php }?>
                                              <li><a  href="javascript:void(0);" class="dropdown-item delete_item" data-id="{{encrypt($job['id'])}}">{{ __('messages.DELETE') }}</a></li>
                                              <!-- <li><a href="{{ url('company/applied-candidates/'.encrypt($job['id'])) }}" class="dropdown-item">{{ __('messages.VIEW_APPLICANT') }} </a></li> -->
                                              

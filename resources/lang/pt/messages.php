@@ -659,5 +659,7 @@ return [
     'JOB_POST_SUCCESS_MESSAGE' => 'O seu anúncio foi enviado :successfully e será publicado dentro de 24 horas após a aprovação do administrador.',
     'JOB_POST_SUCCESS_SUCCESSFULLY' => 'com sucesso',
     'JOB_POST_SUCCESS_EMAIL_INFO' => 'Você receberá um e-mail assim que estiver no ar.',
+    'REPORT_THIS_POST' => 'Denunciar este anúncio',
+    'PLEASE_SELECT_TYPE' => 'Selecione o tipo',
 ];
 ?>

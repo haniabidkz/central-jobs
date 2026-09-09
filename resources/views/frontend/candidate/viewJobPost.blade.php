@@ -25,6 +25,19 @@ if(!empty($postData['likes'])){
 }
 ?>
 
+<style>
+   .report-job-post a {
+      color: #d9534f;
+      font-size: 13px;
+      white-space: nowrap;
+   }
+
+   .report-job-post a:hover {
+      color: #b52b27;
+      text-decoration: underline;
+   }
+</style>
+
 <main>
                <section class="section section-myjob company-page">
                   <div class="container">
@@ -47,6 +60,7 @@ if(!empty($postData['likes'])){
                                     <div class="media-body media_body_id ml-4" id="media_body_id_{{$postData['id']}}">     
                                        <h3 class="total-title">{{$postData['title']}} </h3> 
                                        <p><i class="fa fa-building-o mr-2" aria-hidden="true"></i><a href="{{url($postedUser.'/profile/'.$postData['user']['slug'])}}">{{$postData['user']['company_name']}}</a></p>
+                                       <p><i class="fa fa-hashtag mr-2" aria-hidden="true"></i>{{ __('messages.REFERENCE') }}: {{$postData['job_id']}}</p>
                                        <p><i class="fa fa-calendar mr-2" aria-hidden="true"></i>Publish Date: {{date('d-m-Y',strtotime($postData['start_date']))}}</p>
                                        <p><i class="fa fa-map-marker mr-2" aria-hidden="true"></i>{{ $postData['city'] }} <?php if(!empty($postData['postState'])){ foreach($postData['postState'] as $key=>$state){ if($key > 0){ echo ' , ';} echo $state['state']['name'];}}?>{{ !empty($postData['country']['name']) ? ' , '.$postData['country']['name'] : '' }} </p>
                                        <p><i class="fa fa-clock-o mr-2" aria-hidden="true"></i><?php $toDay = strtotime(date('Y-m-d')); if((strtotime($postData['start_date']) <= $toDay) && (strtotime($postData['end_date']) >= $toDay)){ echo  __('messages.ONGOING');}else if(strtotime($postData['end_date']) < $toDay){ echo __('messages.CLOSED');}else if(strtotime($postData['start_date']) > $toDay){ echo __('messages.PENDING_PUBLICATION');}?></p>
@@ -59,6 +73,21 @@ if(!empty($postData['likes'])){
                                           <p><i class="fa fa-money mr-2" aria-hidden="true"></i>{{$postData['annual_salary'] ?? '-'}}</p>
                                        
                                     </div>
+                                    @if(Auth::check())
+                                    @if(Auth::user()->id != $postData['user']['id'])
+                                       <div class="report-job-post ml-auto">
+                                          <a href="javascript:void(0);" id="report-post-id" data-id="{{$postData['id']}}">
+                                             <i class="fa fa-flag-o mr-1" aria-hidden="true"></i>{{ __('messages.REPORT_THIS_POST') }}
+                                          </a>
+                                       </div>
+                                    @endif
+                                    @else
+                                       <div class="report-job-post ml-auto">
+                                          <a href="{{ url('login') }}">
+                                             <i class="fa fa-flag-o mr-1" aria-hidden="true"></i>{{ __('messages.REPORT_THIS_POST') }}
+                                          </a>
+                                       </div>
+                                    @endif
                                     {{-- <!-- <button class="btn site-btn-color">Apply Now</button>    --> --}}
                                     <?php $toDay = strtotime(date('Y-m-d')); if((strtotime($postData['start_date']) <= $toDay) && (strtotime($postData['end_date']) >= $toDay)){ if((Auth::user()) && (Auth::user()->user_type == 2)){ ?>
                                     <?php if($postData['applied_by'] == 1){ 
@@ -355,5 +384,37 @@ if(!empty($postData['likes'])){
             </div>
          </div>
       </div>
+   <!-- Report Modal -->
+   @if(Auth::check())
+   <div class="modal custom-modal profile-modal report-modal" id="report-modal">
+      <div class="modal-dialog">
+         <div class="modal-content">
+            <button type="button" class="close" data-dismiss="modal"><i class="la la-times"></i></button>
+            <div class="modal-body">
+               <form id="reportPost" action="{{url('/report-post')}}" method="post">
+                  {{ csrf_field() }}
+                  <input type="hidden" name="post_id" id="post_id" value="" />
+                  <div class="login-form">
+                     <div class="row">
+                        <div class="col-12 details-panel-header">
+                           <h4 class="text-left">{{ __('messages.REPORT') }}</h4>
+                        </div>
+                        <div class="col-12">
+                           <div class="form-group required">
+                              <label>{{ __('messages.WHY_ARE_YOU_REPORTING') }}</label>
+                              <textarea class="form-control" name="comment" id="comment"></textarea>
+                           </div>
+                        </div>
+                        <div class="col-12 ext-left">
+                           <button class="btn site-btn-color" type="submit">{{ __('messages.SUBMIT') }}</button>
+                        </div>
+                     </div>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+   @endif
 @endsection
 

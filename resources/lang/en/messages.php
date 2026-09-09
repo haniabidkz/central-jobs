@@ -736,4 +736,6 @@ return [
     'JOB_POST_SUCCESS_MESSAGE' => 'Your post has been submitted :successfully and will be published within 24 hours after admin approval.',
     'JOB_POST_SUCCESS_SUCCESSFULLY' => 'successfully',
     "JOB_POST_SUCCESS_EMAIL_INFO" => "You'll receive an email when it's live.",
+    'REPORT_THIS_POST' => 'Report this post',
+    'PLEASE_SELECT_TYPE' => 'Please select type',
 ];

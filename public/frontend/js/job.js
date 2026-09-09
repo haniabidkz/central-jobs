@@ -184,7 +184,15 @@ function sleep(ms) {
   
                                                   $('#description').summernote({
                                                       height: 250,
-                                                      
+                                                      toolbar: [
+                                                          ['style', ['style']],
+                                                          ['font', ['bold', 'underline', 'clear']],
+                                                          ['fontname', ['fontname']],
+                                                          ['color', ['color']],
+                                                          ['para', ['ul', 'ol', 'paragraph']],
+                                                          ['table', ['table']],
+                                                          ['insert', ['link', 'picture']]
+                                                      ]
                                                   });
                                                   
                                                   // CKEDITOR.on('dialogDefinition', function(ev)
@@ -229,6 +237,9 @@ function sleep(ms) {
                                                               },
                                                               country_id: { 
                                                                   required: true 
+                                                              },
+                                                              type: {
+                                                                  required: true
                                                               },
                                                            
                                                               seniority: { 
@@ -297,6 +308,9 @@ function sleep(ms) {
                                                               },
                                                               country_id: { 
                                                                   required: $this.lanFilter(allMsgText.PLEASE_SELECT_COUNTRY) 
+                                                              },
+                                                              type: {
+                                                                  required: $this.lanFilter(allMsgText.PLEASE_SELECT_TYPE)
                                                               },
                                                            
                                                               seniority: { 
@@ -835,6 +849,15 @@ function sleep(ms) {
   
                                                   $('#description').summernote({
                                                       height: 250,
+                                                      toolbar: [
+                                                          ['style', ['style']],
+                                                          ['font', ['bold', 'underline', 'clear']],
+                                                          ['fontname', ['fontname']],
+                                                          ['color', ['color']],
+                                                          ['para', ['ul', 'ol', 'paragraph']],
+                                                          ['table', ['table']],
+                                                          ['insert', ['link', 'picture']]
+                                                      ]
                                                   });
   
                                                   // CKEDITOR.replace( 'description', {

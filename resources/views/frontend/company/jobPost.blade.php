@@ -80,8 +80,13 @@
                               <div class="form-group">
                                  <select class="form-control" name="city" id="city">
                                     <option value=""> {{ __('messages.CITY') }}</option>
+                                    <option value="Wien - Vienna">Wien - Vienna</option>
                                     <?php if ($cities) {
                                        foreach ($cities as $key => $val) {
+                                          // Vienna is offered as the combined "Wien - Vienna" option above
+                                          if (in_array($val['id'], [7156, 7157]) || in_array(mb_strtolower($val['name']), ['wien', 'vienna'])) {
+                                             continue;
+                                          }
                                     ?>
                                           <option value="{{$val['name']}}">{{$val['name']}}</option>
                                     <?php }
