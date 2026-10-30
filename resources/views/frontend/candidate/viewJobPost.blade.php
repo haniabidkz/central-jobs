@@ -406,7 +406,7 @@ if(!empty($postData['likes'])){
                            </div>
                         </div>
                         <div class="col-12 ext-left">
-                           <button class="btn site-btn-color report-post-cls" type="submit">{{ __(\'messages.SUBMIT\') }}</button>
+                           <button class="btn site-btn-color report-post-cls" type="submit">{{ __('messages.SUBMIT') }}</button>
                         </div>
                      </div>
                   </div>
