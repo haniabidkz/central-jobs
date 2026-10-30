@@ -35,6 +35,7 @@ return Application::configure(basePath: dirname(__DIR__))
             \App\Http\Middleware\VerifyCsrfToken::class,
             Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\Localization::class,
+            \App\Http\Middleware\ClearLegacyAdminWebLogin::class,
         ]);
 
         $middleware->group('api', [
