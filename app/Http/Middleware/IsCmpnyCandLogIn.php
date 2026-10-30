@@ -29,7 +29,11 @@ class IsCmpnyCandLogIn
         }
         
         if (Auth::user()->user_type == 1) {
-            return redirect()->route('/logout');
+            // admin accounts cannot use candidate/company features
+            if ($request->expectsJson() || $request->ajax()) {
+                return response()->json(['message' => 'Admin accounts cannot perform this action. Please use a candidate or company account.'], 403);
+            }
+            return redirect()->route('logout');
         }
         
         return $next($request);

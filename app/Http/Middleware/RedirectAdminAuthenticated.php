@@ -15,18 +15,12 @@ class RedirectAdminAuthenticated
      * @param  string|null  $guard
      * @return mixed
      */
-    public function handle($request, Closure $next, $guard = null)
+    public function handle($request, Closure $next, $guard = 'admin')
     {
-        if (Auth::guard($guard)->check()) {   
-             //if user logged in & try to login to admin then redirect to logged dashboard            
-            if(Auth::user()->user_type == 2){ // candidate
-                return redirect('/candidate/dashboard');
-            }
-            if(Auth::user()->user_type == 3){ // company
-                return redirect('/company/dashboard');
-            }
-             return redirect()->route(RouteServiceProvider::ADMIN_DASHBOARD);
-        
+        // admin sessions live on their own guard, so a candidate/company login
+        // on the public site no longer blocks or breaks the admin login page
+        if (Auth::guard($guard)->check()) {
+            return redirect(RouteServiceProvider::ADMIN_DASHBOARD);
         }
 
         return $next($request);

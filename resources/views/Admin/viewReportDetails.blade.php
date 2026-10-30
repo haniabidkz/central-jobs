@@ -110,7 +110,7 @@ function myFunction(id) {
                                    <p>Posted By :</p>
                                 </div>
                                 <div class="col-12 col-sm-9 col-lg-10">
-                                 <p class="discription-p">{{$details['user']['first_name'].' '.$details['user']['last_name']}} </p>
+                                 <p class="discription-p">{{ ($details['user']['user_type'] ?? null) == 3 ? ($details['user']['company_name'] ?? 'N/A') : trim(($details['user']['first_name'] ?? '').' '.($details['user']['last_name'] ?? '')) }} </p>
                                 </div>                                
                             </div> 
                             <div class="row">    
@@ -161,9 +161,9 @@ function myFunction(id) {
                                         @foreach($details['report'] as $key=>$value)
                                         <tr>
                                             <td>
-                                            {{$value['reporterUser']['first_name'].' '.$value['reporterUser']['last_name']}} 
+                                            {{ empty($value['reporterUser']) ? 'N/A' : ((($value['reporterUser']['user_type'] ?? null) == 3) ? ($value['reporterUser']['company_name'] ?? 'N/A') : trim(($value['reporterUser']['first_name'] ?? '').' '.($value['reporterUser']['last_name'] ?? ''))) }} 
                                             </td>
-                                            <td>{{$value['reporterUser']['profile']['profile_headline']}}</td>
+                                            <td>{{ $value['reporterUser']['profile']['profile_headline'] ?? 'N/A' }}</td>
                                             <td> <?php if($value['comment']!=''){?>
                                             {{substr($value['comment'],0,35)}}
                                             <?php if(strlen($value['comment']) > 35){ ?>
@@ -172,7 +172,7 @@ function myFunction(id) {
                                             <?php } }else{ echo 'N/A';}
                                             ?>
                                             </td>
-                                            <td><?php if($value['reporterUser']['profileImage']['name']){ ?> <img src="<?php echo URL::asset($value['reporterUser']['profileImage']['location'])?>" alt="" height="100" width="100" class="img-border-rad-5 img-fluid img-thumbnails"/> <?php }else{ ?><img src="{{asset('/backend/dist/img/no_avatar.jpg')}}" alr="" height="30" width="30" class="img-border-rad-5"/><?php } ?></td>
+                                            <td><?php if(!empty($value['reporterUser']['profileImage']['location'])){ ?> <img src="<?php echo URL::asset($value['reporterUser']['profileImage']['location'])?>" alt="" height="100" width="100" class="img-border-rad-5 img-fluid img-thumbnails"/> <?php }else{ ?><img src="{{asset('/backend/dist/img/no_avatar.jpg')}}" alr="" height="30" width="30" class="img-border-rad-5"/><?php } ?></td>
                                             <td>
                                                 <?php if($value['status'] == 0){?>
                                                     <button type="button" class="btn order-btn-width btn-success btn-sm disable-cursor">Reported</button>

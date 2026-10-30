@@ -30,6 +30,10 @@ const dashboardFunctions = {
                                 // console.log('str1');
                                 // console.log(str);
                                 // console.log('str');
+                                // tolerate a missing translation key instead of throwing inside a ready handler
+                                if(typeof str !== 'string'){
+                                    return str === undefined || str === null ? '' : str;
+                                }
                                 var res = str.split("|");
                                 if(res[1] != undefined){
                                     str = str.replace("|","'");

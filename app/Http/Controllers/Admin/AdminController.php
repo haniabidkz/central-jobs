@@ -40,7 +40,7 @@ class AdminController extends Controller {
                 ]);
                 $email = $request->email;
                 $password = $request->password;
-                if (Auth::attempt(['email' => $email, 'password' => $password, 'user_type' => 1])) {
+                if (Auth::guard('admin')->attempt(['email' => $email, 'password' => $password, 'user_type' => 1])) {
                     // Authentication passed...
                     return redirect()->intended('admin/dashboard');
                     
@@ -108,8 +108,8 @@ class AdminController extends Controller {
     */
     public function logout(Request $request)
     {
-        Session::flush();
-        Auth::logout();
+        // end only the admin session; a company/candidate login in the same browser stays intact
+        Auth::guard('admin')->logout();
         $request->session()->flash('message-success', "Admin Log Out Successfully");
         return Redirect('admin/login');
     }

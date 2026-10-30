@@ -29,13 +29,12 @@
 
       
 
-      $allmsg = json_encode($allmsg);
+      $allmsg = json_encode($allmsg, JSON_HEX_TAG | JSON_HEX_QUOT | JSON_HEX_APOS | JSON_HEX_AMP);
 
       @endphp
       <script type="text/javascript"> 
       
-      var allMsgText = '{!! $allmsg !!}';
-      allMsgText =  JSON.parse(allMsgText);
+      var allMsgText = {!! $allmsg !!};
      
       </script>
        <!-- main-page -->
