@@ -2675,7 +2675,10 @@ class CandidateService
 
     public function getAllReportedPost()
     {
-        $reportedPost = ReportedPost::where([['type', 'post'], ['status', '!=', 2]])->orderBy("id", "ASC")->pluck('type_id')->all();
+        // Only posts the admin has marked as abuse (status 1) are withheld from search.
+        // A report that is still pending (status 0) must not hide a job by itself, otherwise any
+        // logged-in user can remove any job from the site with one click before an admin has looked.
+        $reportedPost = ReportedPost::where([['type', 'post'], ['status', '=', 1]])->orderBy("id", "ASC")->pluck('type_id')->all();
         return $reportedPost;
     }
 
